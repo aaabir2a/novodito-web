@@ -31,8 +31,10 @@ export default function HomePage() {
             id="h-lg"
             src="/img/n-lg.jpg"
             alt="Nobodito Gaming"
-            width={520}
-            height={520}
+            width={360}
+            height={360}
+            quality={70}
+            sizes="(max-width: 768px) 220px, 350px"
             priority
           />
         </div>

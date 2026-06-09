@@ -6920,6 +6920,27 @@ a,button,.btn,.lb,.ab,[onclick],[role="button"],.glass[href],.ev3d-cta,.shop3d-b
   }
 }
 
+/* ===== BALANCED PERF (v2) ===== */
+/* backdrop-filter:blur is cheap to write, expensive per frame (re-blurs the pixels
+   behind it every scroll tick). Keep it ONLY on the fixed navbar + mobile menu at a
+   small radius; drop it on scrolling content panels and make them solid enough to read. */
+.glass,.rkt,.mcard,.rg-s,.ci{backdrop-filter:none !important;-webkit-backdrop-filter:none !important}
+.glass{background:rgba(10,16,8,.9) !important}
+#nb.sc::before{backdrop-filter:blur(12px) !important;-webkit-backdrop-filter:blur(12px) !important}
+#mm{backdrop-filter:blur(16px) !important;-webkit-backdrop-filter:blur(16px) !important}
+
+/* Hero title glow: collapse 3 stacked drop-shadows into 1. Stacked blurred shadows
+   repaint a large area; one is visually ~the same on a dark bg. */
+.ht .ac{filter:drop-shadow(0 0 22px rgba(255,184,0,.7)) !important}
+.ht .go{filter:drop-shadow(0 0 20px rgba(57,211,83,.55)) !important}
+
+/* Freeze the 3 rotating spotlight rings — 3 perpetual animations, negligible payoff. */
+.h-sp-r{animation:none !important}
+
+/* Pause ALL hero animations when the hero scrolls out of view (class set by HeroMotion).
+   Fails safe: if JS/IO never runs, animations just keep playing as before. */
+.hero.motion-off,.hero.motion-off *{animation-play-state:paused !important}
+
 /* Respect reduced-motion: kill the infinite animations entirely */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{

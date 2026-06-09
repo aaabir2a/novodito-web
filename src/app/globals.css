@@ -6896,9 +6896,12 @@ body{cursor:auto}
 .feat-events,.ntp-section,.shop-preview,.cta-band,.g3,.qstats,#site-footer{
   content-visibility:auto;contain-intrinsic-size:auto 640px;
 }
-/* Custom-cursor JS isn't ported — restore a normal cursor everywhere */
+/* Default native cursor (used on touch / coarse-pointer devices). */
 *{cursor:auto}
 a,button,.btn,.lb,.ab,[onclick],[role="button"],.glass[href],.ev3d-cta,.shop3d-btn{cursor:pointer}
+/* When the custom trailing cursor is active (hover-capable devices), hide the
+   native cursor everywhere so only #cd/#cr/#cg show. */
+html.cursor-custom,html.cursor-custom *{cursor:none !important}
 
 /* Scroll-reveal, robust version.
    The source gated content with .rv{opacity:0} until JS added .sh. That fails

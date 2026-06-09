@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroMotion from "@/components/HeroMotion";
+import CustomCursor from "@/components/CustomCursor";
 
 const bebas = Bebas_Neue({
   variable: "--font-bebas",
@@ -68,6 +69,7 @@ export default function RootLayout({
         <div id="main">{children}</div>
         <Footer />
         <HeroMotion />
+        <CustomCursor />
       </body>
     </html>
   );

@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroMotion from "@/components/HeroMotion";
 import CustomCursor from "@/components/CustomCursor";
+import { AuthProvider } from "@/lib/auth-context";
+import { ToastProvider } from "@/components/ui/Toast";
 
 const bebas = Bebas_Neue({
   variable: "--font-bebas",
@@ -65,11 +67,15 @@ export default function RootLayout({
       className={`${bebas.variable} ${rajdhani.variable} ${orbitron.variable}`}
     >
       <body>
-        <Navbar />
-        <div id="main">{children}</div>
-        <Footer />
-        <HeroMotion />
-        <CustomCursor />
+        <ToastProvider>
+          <AuthProvider>
+            <Navbar />
+            <div id="main">{children}</div>
+            <Footer />
+            <HeroMotion />
+            <CustomCursor />
+          </AuthProvider>
+        </ToastProvider>
       </body>
     </html>
   );

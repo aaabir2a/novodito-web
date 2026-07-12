@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/auth-context";
 
 const NAV: { href: string; icon: string; label: string }[] = [
   { href: "/", icon: "🏠", label: "Home" },
@@ -29,6 +30,7 @@ const LANGS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lang, setLang] = useState("en");
@@ -98,9 +100,19 @@ export default function Navbar() {
               </button>
             ))}
           </div>
-          <Link className="ab" href="/login">
-            <span>👤 Player Login</span>
-          </Link>
+          {!loading && user ? (
+            <Link
+              className="ab"
+              href="/profile"
+              style={{ borderColor: "rgba(0,255,127,.35)", color: "var(--lm-green,#00FF7F)" }}
+            >
+              <span>👤 {user.username}</span>
+            </Link>
+          ) : (
+            <Link className="ab" href="/login">
+              <span>👤 Player Login</span>
+            </Link>
+          )}
           <Link
             className="ab"
             href="/clubs/login"

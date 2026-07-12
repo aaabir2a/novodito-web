@@ -24,7 +24,13 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
     return (
       <div
         className="page act"
-        style={{ padding: "5rem 1.25rem", textAlign: "center", color: "rgba(220,210,240,.7)" }}
+        style={{
+          paddingLeft: "1.25rem",
+          paddingRight: "1.25rem",
+          paddingBottom: "5rem",
+          textAlign: "center",
+          color: "rgba(220,210,240,.7)",
+        }}
       >
         Loading…
       </div>

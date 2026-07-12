@@ -887,26 +887,18 @@ body::before {
   -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 0 20px rgba(255,184,0,.5)) drop-shadow(0 2px 8px rgba(0,0,0,.8));
 }
+/* Perf: no infinite background-position animation on filtered text — the whole
+   drop-shadow chain re-rasterizes every frame. Static gradient + one glow. */
 .st .ac {
   background: linear-gradient(135deg, var(--lime), var(--lime2), var(--lime3), var(--lime));
-  background-size: 200% 200%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter:
-    drop-shadow(0 0 15px rgba(0,255,127,.9))
-    drop-shadow(0 0 35px rgba(0,255,127,.55))
-    drop-shadow(0 0 70px rgba(0,255,127,.25));
-  animation: greenShift 3s ease infinite;
+  filter: drop-shadow(0 0 20px rgba(0,255,127,.65));
 }
 @keyframes greenShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 .st .go {
   background: linear-gradient(135deg, var(--gold), var(--gold2), var(--gold3), var(--gold));
-  background-size: 200% 200%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter:
-    drop-shadow(0 0 15px rgba(255,184,0,.9))
-    drop-shadow(0 0 35px rgba(255,184,0,.55))
-    drop-shadow(0 0 70px rgba(255,184,0,.25));
-  animation: goldShift 3s ease infinite;
+  filter: drop-shadow(0 0 20px rgba(255,184,0,.65));
 }
 @keyframes goldShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
@@ -916,27 +908,18 @@ body::before {
   -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 4px 20px rgba(0,0,0,.9));
 }
+/* Perf: was the single biggest home-page cost — infinite gradient shift on
+   display-size text with four stacked drop-shadows (up to 100px blur) forced a
+   full filter re-raster every frame. Static gradient, two shadows, no loop. */
 .ht .ac {
   background: linear-gradient(135deg, #00FF7F, #40FFB0, #00CC55, #80FFB0);
-  background-size: 300% 300%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter:
-    drop-shadow(0 0 25px rgba(0,255,127,1))
-    drop-shadow(0 0 55px rgba(0,255,127,.6))
-    drop-shadow(0 0 100px rgba(0,255,127,.3))
-    drop-shadow(0 4px 12px rgba(0,0,0,.8));
-  animation: greenShift 2s ease infinite;
+  filter: drop-shadow(0 0 25px rgba(0,255,127,.8)) drop-shadow(0 4px 12px rgba(0,0,0,.8));
 }
 .ht .go {
   background: linear-gradient(135deg, #FFB800, #FFD000, #FFF0A0, #FFB800);
-  background-size: 300% 300%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter:
-    drop-shadow(0 0 25px rgba(255,184,0,1))
-    drop-shadow(0 0 55px rgba(255,184,0,.6))
-    drop-shadow(0 0 100px rgba(255,184,0,.3))
-    drop-shadow(0 4px 12px rgba(0,0,0,.8));
-  animation: goldShift 2s ease infinite;
+  filter: drop-shadow(0 0 25px rgba(255,184,0,.8)) drop-shadow(0 4px 12px rgba(0,0,0,.8));
 }
 
 
@@ -1239,13 +1222,8 @@ body::before {
 
 .section-strip-title {
   background: linear-gradient(135deg, var(--gold3), var(--gold2), var(--gold));
-  background-size: 200% 200%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter:
-    drop-shadow(0 0 20px rgba(255,184,0,.7))
-    drop-shadow(0 0 45px rgba(255,184,0,.4))
-    drop-shadow(0 0 80px rgba(255,184,0,.2));
-  animation: goldShift 3s ease infinite;
+  filter: drop-shadow(0 0 22px rgba(255,184,0,.6));
 }
 .section-strip-line {
   background: linear-gradient(90deg, rgba(255,184,0,.6), rgba(191,95,255,.3), transparent);
@@ -1467,9 +1445,11 @@ button,input,select,textarea{font-family:var(--fb);cursor:none}
 ::-webkit-scrollbar-thumb{background:linear-gradient(var(--lime),var(--gold))}
 
 
-#cd{width:8px;height:8px;background:var(--lime);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--lime),0 0 20px rgba(57,211,83,.3);transition:width .2s,height .2s,background .2s}
-#cr{width:32px;height:32px;border:1px solid rgba(57,211,83,.55);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
-#cg{width:110px;height:110px;background:radial-gradient(circle,rgba(57,211,83,.07) 0%,transparent 70%);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform .4s}
+/* Cursor layers are moved via transform (translate3d) from JS — compositor-only.
+   Never left/top: those invalidate layout every frame and caused visible lag. */
+#cd{width:8px;height:8px;background:var(--lime);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);will-change:transform;box-shadow:0 0 10px var(--lime),0 0 20px rgba(57,211,83,.3);transition:width .2s,height .2s,background .2s}
+#cr{width:32px;height:32px;border:1px solid rgba(57,211,83,.55);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);will-change:transform;transition:width .25s,height .25s}
+#cg{width:110px;height:110px;background:radial-gradient(circle,rgba(57,211,83,.07) 0%,transparent 70%);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);will-change:transform}
 body.ch #cd{width:14px;height:14px;background:var(--gold)}
 body.ch #cr{width:48px;height:48px;border-color:rgba(212,175,55,.5)}
 
@@ -6951,3 +6931,88 @@ html.cursor-custom,html.cursor-custom *{cursor:none !important}
     transition-duration:.001ms !important;scroll-behavior:auto !important;
   }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TACTICAL HUD NAVBAR  (#hud-nav)
+   Angular clipped frame, scanline chrome, corner-bracket active states.
+   All motion is transform/opacity (compositor-only).
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{--nav-h:64px}
+
+#hud-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:500;display:flex;align-items:center;gap:1.1rem;padding:0 1.4rem}
+
+/* Frame: panel background + notched lower corners + scanline + energy sweep */
+.hn-frame{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(3,0,10,.55),rgba(3,0,10,.1));border-bottom:1px solid rgba(57,211,83,.12);transition:background .35s,border-color .35s}
+#hud-nav.sc .hn-frame{background:rgba(4,6,14,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:rgba(57,211,83,.3);clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 22px) 100%,22px 100%,0 calc(100% - 8px))}
+.hn-frame::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(210,255,220,.03) 0 1px,transparent 1px 3px);opacity:0;transition:opacity .35s}
+#hud-nav.sc .hn-frame::before{opacity:1}
+.hn-frame::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent 20%,rgba(57,211,83,.9) 50%,rgba(255,184,0,.7) 58%,transparent 80%);transform:translateX(-100%);animation:hnSweep 7s linear infinite}
+@keyframes hnSweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+
+/* Logo: hexagonal frame, dual-accent ring, Bebas wordmark */
+.hn-logo{display:flex;align-items:center;gap:.65rem;position:relative;z-index:2;flex-shrink:0;cursor:none}
+.hn-hex{position:relative;width:42px;height:42px;display:grid;place-items:center;flex-shrink:0;transition:transform .3s var(--e1)}
+.hn-hex::before{content:'';position:absolute;inset:-2px;background:conic-gradient(from 200deg,var(--lime),var(--gold),var(--lime2),var(--gold),var(--lime));clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.hn-hex::after{content:'';position:absolute;inset:0;background:#05010f;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.hn-hex img{position:relative;z-index:1;width:32px;height:32px;object-fit:cover;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.hn-logo:hover .hn-hex{transform:rotate(-8deg) scale(1.06)}
+.hn-word{font-family:var(--fh);font-size:1.15rem;letter-spacing:.12em;color:var(--white);white-space:nowrap}
+.hn-word b{color:var(--lime);font-weight:400}
+
+/* Rail: centered when it fits, safe horizontal scroll when it doesn't.
+   The auto-margins (not justify-content:center) are what prevent the first
+   item from being clipped under the logo on narrow desktop widths. */
+.hn-rail{display:flex;list-style:none;gap:.1rem;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;position:relative;z-index:2;margin:0;padding:0}
+.hn-rail::-webkit-scrollbar{display:none}
+.hn-rail li:first-child{margin-left:auto}
+.hn-rail li:last-child{margin-right:auto}
+.hn-link{position:relative;display:block;padding:.55rem .66rem .6rem;font-family:var(--fo);font-size:.57rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:rgba(170,196,172,.85);white-space:nowrap;transition:color .22s;cursor:none}
+.hn-link::after{content:'';position:absolute;left:.66rem;right:.66rem;bottom:5px;height:2px;background:linear-gradient(90deg,var(--lime),rgba(57,211,83,.1));transform:scaleX(0);transform-origin:left;transition:transform .26s var(--e1)}
+.hn-link:hover{color:#dcffe1}
+.hn-link:hover::after{transform:scaleX(1)}
+.hn-link.on{color:var(--lime);text-shadow:0 0 12px rgba(57,211,83,.55)}
+.hn-link.on::after{transform:scaleX(1);background:linear-gradient(90deg,var(--gold),var(--lime))}
+/* Target-lock corner brackets on the active item */
+.hn-link.on::before{content:'';position:absolute;inset:2px 1px;opacity:.9;background:
+  linear-gradient(var(--lime),var(--lime)) top left/8px 1px,
+  linear-gradient(var(--lime),var(--lime)) top left/1px 8px,
+  linear-gradient(var(--lime),var(--lime)) top right/8px 1px,
+  linear-gradient(var(--lime),var(--lime)) top right/1px 8px,
+  linear-gradient(var(--lime),var(--lime)) bottom left/8px 1px,
+  linear-gradient(var(--lime),var(--lime)) bottom left/1px 8px,
+  linear-gradient(var(--lime),var(--lime)) bottom right/8px 1px,
+  linear-gradient(var(--lime),var(--lime)) bottom right/1px 8px;
+  background-repeat:no-repeat}
+
+/* Ops cluster: language toggles + clipped HUD chips */
+.hn-ops{display:flex;align-items:center;gap:.45rem;position:relative;z-index:2;flex-shrink:0}
+.hn-lang{display:flex;gap:.2rem;margin-right:.15rem}
+.hn-lb{background:transparent;border:1px solid rgba(57,211,83,.18);color:var(--gray);font-family:var(--fo);font-size:.53rem;font-weight:700;letter-spacing:.06em;padding:.3rem .5rem;cursor:none;transition:color .2s,border-color .2s,background .2s}
+.hn-lb:hover,.hn-lb.on{color:var(--deep);background:var(--lime);border-color:var(--lime)}
+
+.hn-chip{position:relative;display:inline-flex;padding:0;background:linear-gradient(135deg,rgba(255,184,0,.6),rgba(255,184,0,.18));clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);cursor:none;transition:transform .2s var(--e1)}
+.hn-chip:hover{transform:translateY(-1px)}
+.hn-chip>span{position:relative;display:inline-flex;align-items:center;gap:.35rem;margin:1px;padding:.42rem .8rem;background:#0a0714;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);font-family:var(--fo);font-size:.55rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);transition:background .22s,color .22s}
+.hn-chip:hover>span{background:#171024;color:#ffe9b0}
+.hn-chip.lime{background:linear-gradient(135deg,rgba(57,211,83,.65),rgba(57,211,83,.2))}
+.hn-chip.lime>span{color:var(--lime)}
+.hn-chip.lime:hover>span{background:#0e1c12;color:#d7ffdc}
+.hn-chip.ghost{background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.07))}
+.hn-chip.ghost>span{color:rgba(196,210,198,.85)}
+.hn-chip.ghost:hover>span{color:#fff}
+
+/* Burger (mobile trigger) */
+.hn-burger{display:none;flex-direction:column;gap:5px;background:none;border:1px solid rgba(57,211,83,.25);padding:.55rem .5rem;cursor:none;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+.hn-burger span{width:20px;height:2px;background:var(--lime);transition:transform .25s}
+.hn-burger:hover span:nth-child(2){transform:scaleX(.7)}
+
+/* Responsive collapse: rail needs ~1100px with 9 items */
+@media(max-width:1259px){.hn-chip.desk{display:none}.hn-lang{display:none}}
+@media(max-width:1099px){.hn-rail{display:none}.hn-burger{display:flex}}
+@media(max-width:560px){.hn-word{display:none}#hud-nav{padding:0 1rem}}
+
+/* ── Fixed-nav offset for inner pages ──────────────────────────────────────
+   Home (#page-home) owns its hero padding; every other page gets a uniform
+   gap below the fixed navbar so content never starts underneath it. */
+.page:not(#page-home){padding-top:calc(var(--nav-h) + 20px)}

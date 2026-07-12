@@ -80,7 +80,10 @@ function ProfileView({ user }: { user: PlayerProfile }) {
     .join(", ");
 
   return (
-    <div className="page act" style={{ padding: "3rem 1.25rem 5rem" }}>
+    <div
+      className="page act"
+      style={{ paddingLeft: "1.25rem", paddingRight: "1.25rem", paddingBottom: "5rem" }}
+    >
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
           <div>

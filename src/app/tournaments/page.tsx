@@ -62,7 +62,12 @@ export default async function Page() {
   }
 
   return (
-    <div className="page act" id="page-tournaments" style={{ padding: "2rem 1.25rem 4rem" }}>
+    // top padding comes from the global fixed-nav offset (.page rule)
+    <div
+      className="page act"
+      id="page-tournaments"
+      style={{ paddingLeft: "1.25rem", paddingRight: "1.25rem", paddingBottom: "4rem" }}
+    >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <h1 className="ht" style={{ fontSize: "2.2rem", marginBottom: ".5rem" }}>
           <span className="go">TOURNAMENTS</span>

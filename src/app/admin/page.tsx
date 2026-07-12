@@ -3,11 +3,11 @@ import PageStub from "@/components/PageStub";
 
 export const metadata: Metadata = {
   title: "Admin",
-  description: "Administrator access to the Nobodito management console.",
+  description: "Administrator access to the eBattleVerse management console.",
 };
 
 export default function Page() {
   return (
-    <PageStub icon="🔐" title="Admin" blurb="Administrator access to the Nobodito management console." />
+    <PageStub icon="🔐" title="Admin" blurb="Administrator access to the eBattleVerse management console." />
   );
 }

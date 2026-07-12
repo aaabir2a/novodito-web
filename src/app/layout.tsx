@@ -30,10 +30,10 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nobodito.gg"),
+  metadataBase: new URL("https://ebattleverse.com"),
   title: {
-    default: "Nobodito Gaming — Official eFootball Hub 2026",
-    template: "%s · Nobodito Gaming",
+    default: "eBattleVerse — Official eFootball Hub 2026",
+    template: "%s · eBattleVerse",
   },
   description:
     "Bangladesh's premier eFootball tournament organizer. Official Konami partner. LAN tournaments, live streams, and global rankings for the 2026 season.",
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
     "tournaments",
     "Konami",
     "gaming",
-    "Nobodito",
+    "eBattleVerse",
   ],
   openGraph: {
     type: "website",
-    title: "Nobodito Gaming — Official eFootball Hub 2026",
+    title: "eBattleVerse — Official eFootball Hub 2026",
     description:
       "Bangladesh's premier eFootball tournament organizer. LAN tournaments, live streams, global rankings.",
-    siteName: "Nobodito Gaming",
+    siteName: "eBattleVerse",
   },
   twitter: { card: "summary_large_image" },
 };

@@ -29,13 +29,13 @@ export default function HomePage() {
           <Image
             className="h-li"
             id="h-lg"
-            src="/img/n-lg.jpg"
-            alt="Nobodito Gaming"
+            src="/logo.svg"
+            alt="eBattleVerse"
             width={360}
             height={360}
-            quality={70}
             sizes="(max-width: 768px) 220px, 350px"
             priority
+            unoptimized
           />
         </div>
         <div className="orb" style={{ width: 58, height: 58, top: "22%", right: "30%", animationDuration: "9s", opacity: 0.12 }} />

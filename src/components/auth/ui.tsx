@@ -25,7 +25,14 @@ export function AuthShell({
   return (
     <div
       className="page act"
-      style={{ padding: "3rem 1.25rem 5rem", display: "flex", justifyContent: "center" }}
+      style={{
+        // top padding comes from the global fixed-nav offset (.page rule)
+        paddingLeft: "1.25rem",
+        paddingRight: "1.25rem",
+        paddingBottom: "5rem",
+        display: "flex",
+        justifyContent: "center",
+      }}
     >
       <div style={{ width: "100%", maxWidth }}>
         <div

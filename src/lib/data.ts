@@ -73,12 +73,12 @@ export const events: EventItem[] = [
 
 export const shopItems: ShopItem[] = [
   { id: 1, name: "Official Player Jersey 2026", cat: "jersey", desc: "Premium quality jersey worn by official tournament players. Available in all sizes.", price: 1200, sale: null, stock: 50, emoji: "👕", status: "active" },
-  { id: 2, name: "Nobodito Gaming Cap", cat: "merch", desc: "Classic snapback cap with embroidered Nobodito Gaming logo.", price: 550, sale: 450, stock: 35, emoji: "🧢", status: "active" },
+  { id: 2, name: "eBattleVerse Cap", cat: "merch", desc: "Classic snapback cap with embroidered eBattleVerse logo.", price: 550, sale: 450, stock: 35, emoji: "🧢", status: "active" },
   { id: 3, name: "eFootball Sticker Pack", cat: "collectible", desc: "10 high-quality vinyl stickers featuring tournament winners and logos.", price: 150, sale: null, stock: 200, emoji: "✨", status: "active" },
   { id: 4, name: "Tournament Wristband", cat: "accessory", desc: "Official tournament wristband worn by players and staff.", price: 80, sale: null, stock: 150, emoji: "📿", status: "active" },
-  { id: 5, name: "Champion Trophy Miniature", cat: "collectible", desc: "Miniature replica of the Nobodito Gaming Champion Trophy.", price: 2500, sale: 2200, stock: 20, emoji: "🏆", status: "active" },
-  { id: 6, name: "Gaming Mousepad XL", cat: "accessory", desc: "Extra-large gaming mousepad with Nobodito Gaming design.", price: 800, sale: null, stock: 40, emoji: "🖱️", status: "active" },
-  { id: 7, name: "Nobodito Hoodie", cat: "merch", desc: "Premium fleece hoodie with full-back print logo.", price: 1800, sale: null, stock: 25, emoji: "🧥", status: "active" },
+  { id: 5, name: "Champion Trophy Miniature", cat: "collectible", desc: "Miniature replica of the eBattleVerse Champion Trophy.", price: 2500, sale: 2200, stock: 20, emoji: "🏆", status: "active" },
+  { id: 6, name: "Gaming Mousepad XL", cat: "accessory", desc: "Extra-large gaming mousepad with eBattleVerse design.", price: 800, sale: null, stock: 40, emoji: "🖱️", status: "active" },
+  { id: 7, name: "eBattleVerse Hoodie", cat: "merch", desc: "Premium fleece hoodie with full-back print logo.", price: 1800, sale: null, stock: 25, emoji: "🧥", status: "active" },
   { id: 8, name: "eFootball 2026 Yearbook", cat: "collectible", desc: "Official printed yearbook documenting the 2026 season.", price: 350, sale: null, stock: 0, emoji: "📕", status: "out" },
 ];
 
@@ -92,7 +92,7 @@ export const players: Player[] = [
 ];
 
 export const tickerItems = [
-  "Nobodito Bangladesh Open 2026 — Registration Open",
+  "eBattleVerse Bangladesh Open 2026 — Registration Open",
   "eFootball Summer Championship 2026 — Coming July",
   "Pro League Season 3 — Nominations Opening Soon",
   "RafsanPro leads 2026 national rankings — 4,820 pts",

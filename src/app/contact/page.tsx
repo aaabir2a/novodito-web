@@ -3,11 +3,11 @@ import PageStub from "@/components/PageStub";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with the Nobodito Gaming team.",
+  description: "Get in touch with the eBattleVerse team.",
 };
 
 export default function Page() {
   return (
-    <PageStub icon="📞" title="Contact" blurb="Get in touch with the Nobodito Gaming team." />
+    <PageStub icon="📞" title="Contact" blurb="Get in touch with the eBattleVerse team." />
   );
 }

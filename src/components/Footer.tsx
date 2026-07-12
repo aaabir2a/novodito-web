@@ -10,13 +10,14 @@ export default function Footer() {
             <div className="ft-logo">
               <Image
                 id="ft-lg"
-                src="/img/n-lg.jpg"
-                alt="Nobodito Gaming"
+                src="/logo.svg"
+                alt="eBattleVerse"
                 width={48}
                 height={48}
+                unoptimized
               />
               <div className="ft-logo-t">
-                NOBODITO <span>GAMING</span>
+                eBATTLE<span>VERSE</span>
               </div>
             </div>
             <p>
@@ -97,8 +98,8 @@ export default function Footer() {
 
         <div className="ft-bot">
           <div className="ft-cp">
-            © 2026 <span>Nobodito Gaming</span>. All rights reserved. Official
-            Konami eFootball Partner.
+            © 2026 <span>eBattleVerse</span>. All rights reserved. Official
+            Konami eFootball Partner. eBattleVerse.com
           </div>
           <div className="ft-lks">
             <a href="#">Terms</a>

@@ -11,7 +11,8 @@ export default function PageStub({
 }) {
   return (
     <div className="page act">
-      <div className="wrap" style={{ padding: "5rem 1.8rem 6rem" }}>
+      {/* .page already carries the fixed-nav top offset */}
+      <div className="wrap" style={{ padding: "1.5rem 1.8rem 6rem" }}>
         <div className="section-strip">
           <div className="section-strip-line" />
           <span className="section-strip-icon">{icon}</span>

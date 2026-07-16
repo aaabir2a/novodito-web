@@ -288,3 +288,154 @@ export function getTournaments(
     next: { revalidate: 60 },
   } as ApiFetchOptions);
 }
+
+/* ───────────────────────── Phase 1: Player Profile & Social ─────────────────
+   Shapes mirror the LIVE backend responses (which are flatter than the v3 doc
+   in places — /players/me/ is a flat identity serializer, /players/{id}/ is
+   the nested public profile). Verified against the running API 2026-07-16. */
+
+export interface PublicPlayer {
+  id: string;
+  username: string;
+  legal_name: string | null;
+  is_verified: boolean;
+  is_banned: boolean;
+  cover_photo_url: string | null;
+  profile_photo_url: string | null;
+  location: { country: string; region: string; division: string; city: string };
+  primary_club: {
+    id: string;
+    name: string;
+    emblem_url: string | null;
+    contract_days_remaining: number | null;
+  } | null;
+  social_links: { facebook: string | null; discord: string | null; konami: string | null };
+  stats_summary: {
+    total_matches: number;
+    total_wins: number;
+    win_rate_pct: number;
+    total_goals: number;
+  };
+  rank_points: { club_match: number; solo_identity: number };
+  follower_count: number;
+  following_count: number;
+  like_count: number;
+  device_type: DeviceType;
+  platform_role: string;
+  current_win_streak: number;
+  created_at: string;
+  /** own-profile only */
+  s_coin_balance?: number;
+  elite_rank?: boolean;
+}
+
+export interface CareerData {
+  debut: { played_at: string; opponent_username: string; opponent_id: string } | null;
+  last_match: { played_at: string; opponent_username: string } | null;
+  avg_match_delay_days: number | null;
+  max_gap_days: number | null;
+  best_moments: {
+    longest_unbeaten_streak: { count: number; started_at: string; ended_at: string } | null;
+    max_goals_match: {
+      goals: number;
+      opponent_username: string;
+      scoreline: string;
+      played_at: string;
+    } | null;
+    most_defeated_opponent: {
+      opponent_id: string;
+      opponent_username: string;
+      defeat_count: number;
+    } | null;
+  } | null;
+}
+
+export interface FormMatch {
+  result: "Win" | "Loss" | "Draw";
+  score: string;
+  opponent_id: string;
+  opponent_username: string;
+  played_at: string;
+}
+export interface FormData {
+  current_unbeaten_streak: number;
+  matches: FormMatch[];
+}
+
+export interface RatingEntry {
+  match_rating: number;
+  opponent_id: string;
+  opponent_photo_url: string | null;
+  played_at: string;
+}
+
+export interface AnalyticsData {
+  position_label: string;
+  position_confidence: "high" | "medium" | "low";
+  radar: {
+    passing_precision: number;
+    shooting_accuracy: number;
+    defensive_contrib: number;
+    possession_retention: number;
+    physical_stamina: number;
+  };
+  insufficient_data: boolean;
+}
+
+export function getPlayer(id: string): Promise<PublicPlayer> {
+  return apiFetch<PublicPlayer>(`/players/${id}/`);
+}
+export function getPlayerCareer(id: string): Promise<CareerData> {
+  return apiFetch<CareerData>(`/players/${id}/career/`);
+}
+export function getPlayerForm(id: string): Promise<FormData> {
+  return apiFetch<FormData>(`/players/${id}/form/`);
+}
+export function getPlayerRatings(id: string): Promise<{ ratings: RatingEntry[] }> {
+  return apiFetch<{ ratings: RatingEntry[] }>(`/players/${id}/ratings/`);
+}
+/** Not yet implemented server-side (404) — callers must treat failure as "insufficient data". */
+export async function getPlayerAnalytics(id: string): Promise<AnalyticsData | null> {
+  try {
+    return await apiFetch<AnalyticsData>(`/players/${id}/analytics/`);
+  } catch {
+    return null;
+  }
+}
+export function exportDossier(id: string): Promise<Record<string, unknown>> {
+  return apiFetch<Record<string, unknown>>(`/players/${id}/export-dossier/`);
+}
+
+/* ── Social (REQ-58) ── */
+
+export interface FeedItem {
+  id?: string;
+  type?: string;
+  actor_username?: string;
+  actor_id?: string;
+  message?: string;
+  created_at?: string;
+  [key: string]: unknown;
+}
+
+export function getFeed(limit = 20, offset = 0): Promise<{ feed: FeedItem[]; next_offset: number | null }> {
+  return apiFetch(`/social/feed/?limit=${limit}&offset=${offset}`);
+}
+export function followPlayer(id: string): Promise<unknown> {
+  return apiFetch(`/social/players/${id}/follow/`, { method: "POST" });
+}
+export function unfollowPlayer(id: string): Promise<unknown> {
+  return apiFetch(`/social/players/${id}/follow/`, { method: "DELETE" });
+}
+export interface FollowListEntry {
+  player_id: string;
+  username: string;
+  profile_photo_url?: string | null;
+  followed_at?: string;
+}
+export function getFollowers(id: string): Promise<{ followers: FollowListEntry[]; count: number }> {
+  return apiFetch(`/social/players/${id}/followers/`);
+}
+export function getFollowing(id: string): Promise<{ following: FollowListEntry[]; count: number }> {
+  return apiFetch(`/social/players/${id}/following/`);
+}

@@ -5,18 +5,20 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
+import WalletPill from "@/components/system/WalletPill";
+import NotificationBell from "@/components/system/NotificationBell";
 
-// Rail shows the core destinations; the rest live in the mobile menu + footer.
+// Rail = final IA (UX_UI_PLAN §3); the rest live in the mobile menu + footer.
 const RAIL: { href: string; label: string }[] = [
   { href: "/", label: "Home" },
   { href: "/tournaments", label: "Tournaments" },
   { href: "/rankings", label: "Rankings" },
   { href: "/matches", label: "Matches" },
-  { href: "/fixtures", label: "Fixtures" },
+  { href: "/live", label: "Live" },
+  { href: "/community", label: "Community" },
+  { href: "/clubs", label: "Clubs" },
   { href: "/news", label: "News" },
   { href: "/shop", label: "Shop" },
-  { href: "/clubs", label: "Clubs" },
-  { href: "/gallery", label: "Gallery" },
 ];
 
 const MENU: { href: string; icon: string; label: string }[] = [
@@ -24,11 +26,14 @@ const MENU: { href: string; icon: string; label: string }[] = [
   { href: "/tournaments", icon: "🏆", label: "Tournaments" },
   { href: "/rankings", icon: "📊", label: "Rankings" },
   { href: "/matches", icon: "⚽", label: "Matches" },
+  { href: "/live", icon: "📡", label: "Live" },
+  { href: "/community", icon: "🌍", label: "Community" },
   { href: "/fixtures", icon: "📅", label: "Fixtures" },
   { href: "/news", icon: "📰", label: "News" },
   { href: "/shop", icon: "🛒", label: "Shop" },
   { href: "/clubs", icon: "🛡️", label: "Clubs" },
   { href: "/gallery", icon: "📸", label: "Gallery" },
+  { href: "/coming-soon", icon: "🚀", label: "Coming Soon" },
   { href: "/register", icon: "📝", label: "Register" },
   { href: "/sponsorship", icon: "🤝", label: "Sponsors" },
   { href: "/about", icon: "ℹ️", label: "About" },
@@ -114,9 +119,13 @@ export default function Navbar() {
           </div>
 
           {!loading && user ? (
-            <Link className="hn-chip lime" href="/profile">
-              <span>👤 {user.username}</span>
-            </Link>
+            <>
+              <WalletPill />
+              <NotificationBell />
+              <Link className="hn-chip lime" href="/profile">
+                <span>👤 {user.username}</span>
+              </Link>
+            </>
           ) : (
             <Link className="hn-chip lime" href="/login">
               <span>👤 Login</span>

@@ -7227,3 +7227,150 @@ html.cursor-custom,html.cursor-custom *{cursor:none !important}
   .eb-pf-actions{padding-top:0;align-items:flex-start;width:100%;flex-direction:row;flex-wrap:wrap}
   .eb-pf-id{padding-top:44px}
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB COMPETITION (Phase 2) — leaderboard / season banner / matchmaking
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* season banner (REQ-42) */
+.eb-season{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.65rem .9rem;font-size:.8rem;color:rgba(200,215,205,.85);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+.eb-season.live{border-color:rgba(57,211,83,.35);background:rgba(57,211,83,.05)}
+.eb-season b{color:var(--lime)}
+.eb-season .rw{margin-left:auto;display:inline-flex;align-items:center;gap:.3rem;color:#7DE8FF;font-size:.72rem}
+
+/* leaderboard (FR-049…052) */
+.eb-lb{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.eb-lb-row{display:flex;align-items:center;gap:.8rem;padding:.55rem .8rem;background:rgba(10,6,22,.55);border:1px solid rgba(255,255,255,.07);clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);transition:border-color .2s,transform .18s var(--e1)}
+.eb-lb-row:hover{border-color:rgba(57,211,83,.3);transform:translateX(3px)}
+.eb-lb-row.gold{border-color:rgba(255,184,0,.45);background:linear-gradient(90deg,rgba(255,184,0,.08),rgba(10,6,22,.55))}
+.eb-lb-row.silver{border-color:rgba(200,210,220,.35)}
+.eb-lb-row.bronze{border-color:rgba(205,127,50,.4)}
+.eb-lb-row.me{border-color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,184,0,.35);background:linear-gradient(90deg,rgba(255,184,0,.1),rgba(10,6,22,.6))}
+.eb-lb-rank{width:44px;flex-shrink:0;font-family:var(--fo);font-size:.72rem;font-weight:700;color:rgba(190,205,195,.7);text-align:center}
+.eb-lb-rank .cr{font-size:1.15rem}
+.eb-lb-id{flex:1;min-width:0}
+.eb-lb-you{font-family:var(--fo);font-size:.5rem;font-weight:700;letter-spacing:.14em;color:#000;background:var(--gold);padding:.15rem .4rem}
+.eb-lb-pts{font-family:var(--fh);font-size:1.05rem;color:var(--lime);flex-shrink:0}
+
+/* matchmaking widget (REQ-40) */
+.eb-mm{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.eb-mm-opts{display:flex;gap:.5rem}
+.eb-mm select{background:#0A0714;border:1px solid rgba(255,255,255,.15);color:#DCEADF;font-family:var(--fo);font-size:.62rem;padding:.5rem .6rem;border-radius:3px;cursor:pointer}
+.eb-mm.queued{border:1px solid rgba(57,211,83,.3);background:rgba(57,211,83,.05);padding:.8rem 1rem;clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+.eb-mm-spin{width:22px;height:22px;border-radius:50%;border:2px solid rgba(57,211,83,.25);border-top-color:var(--lime);animation:ebSpin 1s linear infinite;flex-shrink:0}
+@keyframes ebSpin{to{transform:rotate(360deg)}}
+.eb-mm-state{display:flex;flex-direction:column;gap:.15rem;flex:1;min-width:140px}
+.eb-mm-state b{font-family:var(--fo);font-size:.72rem;letter-spacing:.08em;color:var(--lime)}
+.eb-mm-state span{font-size:.72rem;color:rgba(185,200,190,.65)}
+.eb-mm.offer{flex-direction:column;align-items:center;gap:.6rem;border:1px solid rgba(255,184,0,.5);background:rgba(255,184,0,.06);padding:1.1rem;clip-path:polygon(11px 0,100% 0,100% calc(100% - 11px),calc(100% - 11px) 100%,0 100%,0 11px)}
+.eb-mm-found{font-family:var(--fh);font-size:1.5rem;letter-spacing:.1em;color:var(--gold);filter:drop-shadow(0 0 14px rgba(255,184,0,.5))}
+.eb-mm-opp{font-size:.9rem;color:#EAF5EC}
+.eb-mm-opp b{color:var(--lime)}
+.eb-mm-actions{display:flex;gap:.6rem}
+.eb-mm-hint{font-size:.68rem;color:rgba(185,200,190,.55)}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB CLUBS (Phase 3) — directory / club profile / contracts / arenas / wars
+   ══════════════════════════════════════════════════════════════════════════ */
+.eb-club-card{display:flex;align-items:center;gap:.8rem;padding:.85rem .95rem;background:rgba(10,6,22,.6);border:1px solid rgba(255,255,255,.08);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:border-color .2s,transform .18s var(--e1);cursor:none}
+.eb-club-card:hover{border-color:rgba(57,211,83,.35);transform:translateY(-2px)}
+.eb-club-emblem{width:46px;height:46px;flex-shrink:0;display:grid;place-items:center;background:#0c0820;border:2px solid rgba(255,184,0,.4);clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);font-family:var(--fh);font-size:1.3rem;color:var(--gold);overflow:hidden}
+.eb-club-emblem img{width:100%;height:100%;object-fit:cover}
+.eb-club-emblem.lg{width:74px;height:74px;font-size:2.1rem}
+.eb-club-emblem.sm{width:34px;height:34px;font-size:1rem}
+.eb-club-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:.2rem}
+.eb-club-body b{font-family:var(--fb);font-weight:600;color:#EAF5EC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-club-body .sub{font-family:var(--fo);font-size:.55rem;letter-spacing:.06em;color:rgba(170,190,180,.6);text-transform:uppercase}
+.eb-club-pts{font-family:var(--fh);font-size:1.05rem;color:var(--lime);flex-shrink:0}
+.eb-club-pts.big{font-size:1.6rem}
+.eb-club-head{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;padding:1.1rem;background:rgba(10,6,22,.6);border:1px solid rgba(255,184,0,.18);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.eb-club-create{display:flex;gap:.5rem;flex-wrap:wrap}
+.eb-club-create input{flex:1;min-width:140px;background:#0A0714;border:1px solid rgba(255,255,255,.15);color:#EAF5EC;font-family:var(--fb);font-size:.85rem;padding:.55rem .7rem;border-radius:3px}
+.eb-club-create input:focus{outline:none;border-color:rgba(57,211,83,.5)}
+.eb-club-roster{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.eb-club-member{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.45rem .6rem;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);cursor:none}
+.eb-club-member:hover{border-color:rgba(57,211,83,.35)}
+.eb-club-member .ct{font-family:var(--fo);font-size:.55rem;color:var(--gold)}
+.eb-club-member .ct.dim{color:rgba(170,190,180,.4)}
+
+/* invitations + contract modal (UJ-005) */
+.eb-inv-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+.eb-inv-list li{display:flex;align-items:center;gap:.7rem;font-size:.85rem;color:#DFEDE2;padding:.55rem .7rem;border:1px solid rgba(255,184,0,.25);background:rgba(255,184,0,.04)}
+.eb-inv-list b{color:var(--gold)}
+.eb-contract-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:760;width:min(440px,92vw);background:rgba(8,5,18,.98);border:1px solid rgba(255,184,0,.4);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);padding:1.4rem 1.5rem}
+.eb-contract-modal h3{font-family:var(--fh);font-size:1.3rem;letter-spacing:.06em;color:var(--gold);margin-bottom:.9rem}
+.eb-contract-modal .cl{font-family:var(--fo);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(170,190,180,.6);margin:.7rem 0 .25rem}
+.eb-contract-modal .cv{font-size:.9rem;color:#EAF5EC}
+.eb-contract-modal .terms{margin:.2rem 0 0 1rem;font-size:.78rem;color:rgba(200,215,205,.8);line-height:1.55}
+.eb-contract-durations{display:flex;gap:.4rem;flex-wrap:wrap}
+.eb-contract-durations button{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);color:#DCEADF;font-family:var(--fo);font-size:.6rem;padding:.4rem .7rem;cursor:pointer}
+.eb-contract-durations button.on{border-color:var(--lime);color:var(--lime);background:rgba(57,211,83,.1)}
+
+/* 8-arena board (UJ-003) */
+.eb-board-head{display:flex;align-items:center;justify-content:center;gap:1.4rem;padding:1.1rem;background:rgba(10,6,22,.7);border:1px solid rgba(57,211,83,.2);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);flex-wrap:wrap}
+.eb-board-head .side{display:flex;align-items:center;gap:.9rem;font-family:var(--fh);font-size:1.35rem;color:#fff;min-width:0}
+.eb-board-head .side b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-board-head .agg{font-size:2.4rem;color:var(--lime);filter:drop-shadow(0 0 12px rgba(57,211,83,.5))}
+.eb-board-head .mid{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.eb-board-head .vs{font-family:var(--fo);font-size:.7rem;letter-spacing:.2em;color:rgba(170,190,180,.55)}
+.eb-arena-grid{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.eb-arena{padding:.7rem .8rem;background:rgba(10,6,22,.6);border:1px solid rgba(255,255,255,.09);clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+.eb-arena.done{border-color:rgba(0,255,127,.25)}
+.eb-arena-no{font-family:var(--fo);font-size:.5rem;letter-spacing:.18em;color:var(--gold);margin-bottom:.45rem}
+.eb-arena-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;font-size:.82rem;color:#DFEDE2}
+.eb-arena-row .pl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-arena-row .pl.r{text-align:right}
+.eb-arena-row .pl.w{color:var(--gold);font-weight:700}
+.eb-arena-row .sc{font-family:var(--fh);font-size:1.05rem;color:#fff;flex-shrink:0}
+.eb-arena-foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.5rem;font-size:.62rem;color:rgba(170,190,180,.6)}
+
+/* wars (REQ-43) */
+.eb-war{padding:.9rem 1rem;background:rgba(10,6,22,.6);border:1px solid rgba(255,255,255,.09);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.eb-war.live{border-color:rgba(255,51,85,.4)}
+.eb-war-row{display:flex;align-items:center;gap:.9rem;justify-content:center;font-family:var(--fb)}
+.eb-war-row b{flex:1;min-width:0;color:#EAF5EC;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-war-row b.r{text-align:left}
+.eb-war-row .wp{font-family:var(--fh);font-size:1.7rem;color:var(--gold)}
+.eb-war-row .vs{font-size:1rem}
+.eb-war-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.5rem;font-family:var(--fo);font-size:.58rem;letter-spacing:.08em;color:rgba(170,190,180,.6);text-transform:uppercase}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB ECONOMY (Phase 5) — wallet lanes / tx list / card studio
+   ══════════════════════════════════════════════════════════════════════════ */
+.eb-wallet-lanes{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.eb-lane{display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;padding:1.1rem 1.2rem;cursor:pointer;text-align:left;background:rgba(10,6,22,.6);border:1px solid rgba(255,255,255,.1);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);transition:border-color .2s,transform .18s var(--e1)}
+.eb-lane:hover{transform:translateY(-2px)}
+.eb-lane.bc.on{border-color:rgba(255,184,0,.55);background:linear-gradient(135deg,rgba(255,184,0,.08),rgba(10,6,22,.6))}
+.eb-lane.sc.on{border-color:rgba(125,232,255,.5);background:linear-gradient(135deg,rgba(125,232,255,.07),rgba(10,6,22,.6))}
+.eb-lane .amt{font-family:var(--fh);font-size:2.3rem;line-height:1;color:#fff}
+.eb-lane.bc .amt{color:var(--gold)}
+.eb-lane.sc .amt{color:#7DE8FF}
+.eb-lane .nm{font-family:var(--fo);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(210,225,215,.85)}
+.eb-lane .ds{font-size:.72rem;color:rgba(175,190,180,.6);line-height:1.4}
+.eb-tx-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.eb-tx-list li{display:flex;align-items:center;gap:.9rem;padding:.6rem .2rem;border-bottom:1px solid rgba(255,255,255,.06);font-size:.83rem}
+.eb-tx-list .dir{font-family:var(--fo);font-weight:700;font-size:.8rem;width:52px;text-align:right;color:#FF8095}
+.eb-tx-list .dir.in{color:var(--lime)}
+.eb-tx-list .rs{flex:1;color:#DFEDE2}
+.eb-tx-list time{font-size:.68rem;color:rgba(170,190,180,.5)}
+
+/* card studio (REQ-57) */
+.eb-studio{display:flex;gap:1.4rem;flex-wrap:wrap;align-items:flex-start}
+.eb-card-preview{width:min(340px,100%);aspect-ratio:3/4;flex-shrink:0;display:grid;place-items:center;padding:1.4rem;border:1px solid rgba(255,255,255,.1);clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px)}
+.eb-card-frame{width:100%;height:100%;padding:4px;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.eb-card-inner{width:100%;height:100%;background:rgba(4,2,12,.88);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem}
+.eb-card-inner .av{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:#0c0820;border:2px solid rgba(57,211,83,.5);font-family:var(--fh);font-size:2rem;color:var(--lime)}
+.eb-card-inner b{font-family:var(--fh);font-size:1.4rem;letter-spacing:.06em;color:#fff}
+.eb-card-inner .sub{font-family:var(--fo);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(190,205,195,.6)}
+.eb-asset-grid{display:grid;gap:.55rem;grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.eb-asset{display:flex;flex-direction:column;gap:.35rem;padding:.55rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:border-color .2s}
+.eb-asset:hover{border-color:rgba(57,211,83,.4)}
+.eb-asset.on{border-color:var(--lime);box-shadow:inset 0 0 0 1px rgba(57,211,83,.5)}
+.eb-asset.locked{opacity:.75}
+.eb-asset .sw{width:100%;height:44px;border-radius:3px}
+.eb-asset .nm{font-size:.68rem;color:#DFEDE2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-asset .pr{display:inline-flex;align-items:center;gap:.25rem;font-family:var(--fo);font-size:.55rem;color:#7DE8FF}
+.eb-asset .pr.free{color:rgba(170,190,180,.55)}

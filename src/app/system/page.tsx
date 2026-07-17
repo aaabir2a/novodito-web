@@ -112,7 +112,7 @@ export default function SystemPage() {
 
         <Section title="Wallet + notifications (navbar widgets)">
           <div className="eb-sys-row">
-            <WalletPill battle={125} sCoins={40} />
+            <WalletPill />
             <NotificationBell count={3} />
           </div>
         </Section>

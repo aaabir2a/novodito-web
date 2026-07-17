@@ -1,27 +1,34 @@
 "use client";
 
 // Dual-currency wallet pill (REQ-44/45): always-visible balances in the navbar
-// for authenticated players; tap opens a drawer with the two separated lanes.
-// Balances are wired to the economy API in Phase 5 — until then callers pass
-// whatever the session knows (defaults 0).
+// for authenticated players. Fetches real balances (Phase 5), refreshes when
+// the drawer opens, and links through to the full /wallet page.
 
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getCoinBalance, getSCoinBalance } from "@/lib/api";
 import CoinIcon from "./CoinIcon";
 import { CountUp } from "./Realtime";
 
-export default function WalletPill({
-  battle = 0,
-  sCoins = 0,
-}: {
-  battle?: number;
-  sCoins?: number;
-}) {
+export default function WalletPill() {
   const [open, setOpen] = useState(false);
+  const [battle, setBattle] = useState(0);
+  const [sCoins, setSCoins] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  // close on outside click / Escape
+  const refresh = useCallback(() => {
+    getCoinBalance().then((d) => setBattle(d.balance)).catch(() => null);
+    getSCoinBalance().then((d) => setSCoins(d.s_coin_balance)).catch(() => null);
+  }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  // close on outside click / Escape; refresh when opening
   useEffect(() => {
     if (!open) return;
+    refresh();
     const onDown = (e: MouseEvent) => {
       if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
     };
@@ -34,7 +41,7 @@ export default function WalletPill({
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, refresh]);
 
   return (
     <div className="eb-wallet" ref={rootRef}>
@@ -72,6 +79,9 @@ export default function WalletPill({
             Battle Coins power challenges and chat perks. S Coins buy cosmetics
             and merch — they never affect competition.
           </p>
+          <Link className="btn btn-lm btn-sm" href="/wallet" style={{ justifyContent: "center" }} onClick={() => setOpen(false)}>
+            Open Wallet →
+          </Link>
         </div>
       ) : null}
     </div>

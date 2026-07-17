@@ -32,6 +32,8 @@ import { useToast } from "@/components/ui/Toast";
 import StatusBadge from "@/components/system/StatusBadge";
 import { Skeleton, EmptyState, CountUp } from "@/components/system/Realtime";
 import { FormGrid, RatingsBars, RadarChart, StatTile } from "./charts";
+import MatchmakingWidget from "@/components/system/MatchmakingWidget";
+import InvitationsCard from "./InvitationsCard";
 
 const TABS = ["Overview", "News", "Timeline", "Statistics", "Matches"] as const;
 type Tab = (typeof TABS)[number];
@@ -247,6 +249,18 @@ export default function ProfileView({ playerId, own = false }: { playerId: strin
 
       {tab === "Overview" && (
         <div className="eb-pf-grid">
+          {own ? (
+            <>
+              <section className="eb-pf-card wide">
+                <h3>Matchmaking (REQ-40)</h3>
+                <MatchmakingWidget defaultPlatform={player.device_type === "mobile" ? "Mobile" : "PS5"} />
+              </section>
+              <section className="eb-pf-card wide">
+                <h3>Club Invitations</h3>
+                <InvitationsCard />
+              </section>
+            </>
+          ) : null}
           <section className="eb-pf-card">
             <h3>Recent Form — last 50</h3>
             <FormGrid matches={form?.matches ?? []} streak={form?.current_unbeaten_streak ?? 0} />

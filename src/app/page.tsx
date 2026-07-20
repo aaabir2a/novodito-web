@@ -1,100 +1,97 @@
 import Link from "next/link";
-import Image from "next/image";
 import EventCard from "@/components/cards/EventCard";
 import ShopCard from "@/components/cards/ShopCard";
 import TopPlayerCard from "@/components/cards/TopPlayerCard";
+import HeroOps, { type OpsLadderRow, type OpsTournament } from "@/components/home/HeroOps";
+import { getTournaments, getLeaderboardPreview, getHomeStats } from "@/lib/api";
 import { events, shopItems, players, tickerItems } from "@/lib/data";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+// Command Deck hero data: next open tournament + solo ladder top 3.
+// Both endpoints are public; failures degrade to a hero without the panel.
+async function getHeroData() {
+  const [tRes, lbRes, hsRes] = await Promise.allSettled([
+    getTournaments({ limit: 20 }),
+    getLeaderboardPreview(),
+    getHomeStats(),
+  ]);
+  const tournaments = tRes.status === "fulfilled" ? tRes.value.tournaments : [];
+  const homeStats = hsRes.status === "fulfilled" ? hsRes.value : null;
+  const open = tournaments
+    .filter((t) => t.status === "Registration" && t.starts_at)
+    .sort((a, b) => new Date(a.starts_at!).getTime() - new Date(b.starts_at!).getTime());
+  const next: OpsTournament | null = open[0]
+    ? {
+        id: open[0].id,
+        name: open[0].name,
+        mode: open[0].mode,
+        max_slots: open[0].max_slots,
+        filled_slots: open[0].filled_slots,
+        entry_fee_bdt: open[0].entry_fee_bdt,
+        prize_pool_bdt: open[0].prize_pool_bdt,
+        status: open[0].status,
+        starts_at: open[0].starts_at,
+      }
+    : null;
+  const ladder: OpsLadderRow[] =
+    lbRes.status === "fulfilled" ? lbRes.value.solo_identity_top5.slice(0, 3) : [];
+  const prizeTotal = tournaments.reduce((s, t) => s + (t.prize_pool_bdt || 0), 0);
+  return { next, ladder, eventCount: tournaments.length, prizeTotal, homeStats };
+}
+
+export default async function HomePage() {
+  const hero = await getHeroData();
   const upcoming = events.filter((e) => e.type !== "live");
   const liveItems = events.filter((e) => e.type === "live");
   const homeShop = shopItems.filter((i) => i.status === "active").slice(0, 4);
   const topPlayers = players.slice(0, 12);
   // duplicate ticker list for seamless marquee loop
   const ticker = [...tickerItems, ...tickerItems];
+  const prizeLabel =
+    hero.prizeTotal >= 100000
+      ? `৳${(hero.prizeTotal / 100000).toFixed(1).replace(/\.0$/, "")}L`
+      : `৳${hero.prizeTotal.toLocaleString()}`;
 
   return (
     <div className="page act" id="page-home">
-      {/* ── HERO ── */}
-      <section className="hero">
-        <div className="h-bg" />
-        <div className="h-sp">
-          <div className="h-sp-c" />
-          <div className="h-sp-r" />
-          <div className="h-sp-r" />
-          <div className="h-sp-r" />
-        </div>
-        <div className="h-lw">
-          <div className="h-lg" />
-          <Image
-            className="h-li"
-            id="h-lg"
-            src="/logo.svg"
-            alt="eBattleVerse"
-            width={360}
-            height={360}
-            sizes="(max-width: 768px) 220px, 350px"
-            priority
-            unoptimized
-          />
-        </div>
-        <div className="orb" style={{ width: 58, height: 58, top: "22%", right: "30%", animationDuration: "9s", opacity: 0.12 }} />
-        <div className="orb" style={{ width: 38, height: 38, top: "65%", right: "20%", animationDuration: "7s", animationDelay: "-4s", opacity: 0.09 }} />
-        <div className="orb" style={{ width: 75, height: 75, top: "38%", right: "46%", animationDuration: "12s", animationDelay: "-7s", opacity: 0.07 }} />
+      {/* ── COMMAND DECK HERO ── */}
+      <section className="eb-hero">
+        <div className="eb-hero-bg" aria-hidden />
+        <div className="eb-hero-in">
+          <div className="eb-hero-copy">
+            <div className="eb-hero-kick">
+              <span className="bk" aria-hidden />
+              OFFICIAL KONAMI eFOOTBALL PARTNER · BANGLADESH 2026
+            </div>
+            <h1 className="eb-hero-h1">
+              ENTER THE
+              <br />
+              <span className="ac">eBATTLE</span><span className="go">VERSE</span>
+            </h1>
+            <p className="eb-hero-sub">
+              Ranked ladders, coin-staked challenges, club wars and LAN finals —
+              one competitive universe for Bangladesh&apos;s eFootball players.
+              Every score referee-verified. Every match counts.
+            </p>
+            <div className="eb-hero-ctas">
+              <Link className="btn btn-lm" href="/register">⚡ Start Competing</Link>
+              <Link className="btn btn-gh" href="/live">▶ Watch Live</Link>
+            </div>
+            <ul className="eb-hero-trust">
+              <li>✔ Konami partner</li>
+              <li>🛡 Referee-verified scores</li>
+              <li>💳 bKash payments</li>
+            </ul>
+            <div className="eb-hero-stats">
+              <div><b>{hero.eventCount || 6}</b><span>Season Events</span></div>
+              <div><b>{prizeLabel}</b><span>Prize Pool</span></div>
+              <div><b>2K+</b><span>Players</span></div>
+              <div className="reg"><b>● OPEN</b><span>Registration</span></div>
+            </div>
+          </div>
 
-        <div className="hc">
-          <div className="he">
-            <div className="he-b" />
-            <span className="he-t">Official eFootball Hub · Bangladesh · 2026</span>
-          </div>
-          <h1 className="ht">
-            <span className="ac">PLAY.</span>
-            <br />
-            COMPETE.
-            <br />
-            <span className="go">DOMINATE.</span>
-          </h1>
-          <p className="hd">
-            Bangladesh&apos;s premier eFootball tournament organizer. Official
-            Konami partner. LAN tournaments, live streams, global rankings.
-          </p>
-          <div className="hbs">
-            <Link className="btn btn-lm" href="/register">
-              ⚽ <span>Join Tournament</span>
-            </Link>
-            <Link className="btn btn-gh" href="/shop">
-              🛒 <span>Visit Shop</span>
-            </Link>
-          </div>
-          <div className="ss">
-            <div>
-              <div className="ssv">2K+</div>
-              <div className="ssl">Players</div>
-            </div>
-            <div>
-              <div className="ssv">6</div>
-              <div className="ssl">2026 Events</div>
-            </div>
-            <div>
-              <div className="ssv">৳8M</div>
-              <div className="ssl">Prize Pool</div>
-            </div>
-            <div>
-              <div
-                className="ssv"
-                style={{
-                  background: "linear-gradient(135deg,var(--lime),var(--lime2))",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                  filter: "drop-shadow(0 0 9px rgba(57,211,83,.5))",
-                }}
-              >
-                ●REG
-              </div>
-              <div className="ssl">Open Now</div>
-            </div>
-          </div>
+          <HeroOps tournament={hero.next} ladder={hero.ladder} />
         </div>
       </section>
 
@@ -115,20 +112,20 @@ export default function HomePage() {
         {/* QUICK STATS */}
         <div className="qstats rv" style={{ marginTop: "2.5rem" }}>
           <div className="qstat-item">
-            <div className="qstat-n">2K+</div>
+            <div className="qstat-n">{hero.homeStats?.total_players ?? "2K+"}</div>
             <div className="qstat-l">Registered Players</div>
           </div>
           <div className="qstat-item">
-            <div className="qstat-n">6</div>
-            <div className="qstat-l">Upcoming Events</div>
+            <div className="qstat-n">{hero.eventCount || 6}</div>
+            <div className="qstat-l">Season Events</div>
           </div>
           <div className="qstat-item">
-            <div className="qstat-n">৳8M</div>
+            <div className="qstat-n">{prizeLabel}</div>
             <div className="qstat-l">Total Prize Pool</div>
           </div>
           <div className="qstat-item">
-            <div className="qstat-n">50+</div>
-            <div className="qstat-l">Past Tournaments</div>
+            <div className="qstat-n">{hero.homeStats?.total_countries || 1}</div>
+            <div className="qstat-l">Countries</div>
           </div>
         </div>
 

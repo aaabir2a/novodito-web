@@ -7,6 +7,7 @@ import HeroMotion from "@/components/HeroMotion";
 import CustomCursor from "@/components/CustomCursor";
 import { AuthProvider } from "@/lib/auth-context";
 import { ToastProvider } from "@/components/ui/Toast";
+import ChatbotBubble from "@/components/system/ChatbotBubble";
 
 const bebas = Bebas_Neue({
   variable: "--font-bebas",
@@ -74,6 +75,7 @@ export default function RootLayout({
             <Footer />
             <HeroMotion />
             <CustomCursor />
+            <ChatbotBubble />
           </AuthProvider>
         </ToastProvider>
       </body>

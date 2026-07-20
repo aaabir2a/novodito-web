@@ -34,6 +34,7 @@ import { Skeleton, EmptyState, CountUp } from "@/components/system/Realtime";
 import { FormGrid, RatingsBars, RadarChart, StatTile } from "./charts";
 import MatchmakingWidget from "@/components/system/MatchmakingWidget";
 import InvitationsCard from "./InvitationsCard";
+import RefereeCard from "./RefereeCard";
 
 const TABS = ["Overview", "News", "Timeline", "Statistics", "Matches"] as const;
 type Tab = (typeof TABS)[number];
@@ -308,6 +309,13 @@ export default function ProfileView({ playerId, own = false }: { playerId: strin
               {player.is_banned ? <li><span>Status</span><StatusBadge kind="conflict" label="Suspended" /></li> : null}
             </ul>
           </section>
+
+          {player.platform_role === "referee" ? (
+            <section className="eb-pf-card">
+              <h3>Referee Record (§1.28)</h3>
+              <RefereeCard playerId={playerId} />
+            </section>
+          ) : null}
 
           {own ? (
             <section className="eb-pf-card wide">

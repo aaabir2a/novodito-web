@@ -773,3 +773,183 @@ export function saveCardConfig(frameAssetId: string | null, backgroundAssetId: s
     body: JSON.stringify({ frame_asset_id: frameAssetId, background_asset_id: backgroundAssetId }),
   });
 }
+
+/* ───────────────────────── Phase 6: Community & Reach ───────────────────────
+   Country pages (REQ-53), notifications (REQ-59), shorts (FR-053…056), news. */
+
+export interface CountryEntry {
+  country: string;
+  country_code: string;
+  player_count: number;
+}
+export interface CountryPage {
+  country: string;
+  country_code: string;
+  player_count: number;
+  top_players: { rank: number; player_id: string; username: string; profile_photo_url: string | null; rank_points: number }[];
+  clubs: { id: string; name: string; emblem_url: string | null; rank_points: number }[];
+  upcoming_fixtures: { id: string; type: string; player_a_username: string | null; player_b_username: string | null; scheduled_at: string | null }[];
+}
+export function getCommunityCountries(): Promise<{ countries: CountryEntry[] }> {
+  return apiFetch(`/social/community/countries/`);
+}
+export function getCommunityCountry(code: string): Promise<CountryPage> {
+  return apiFetch(`/social/community/${encodeURIComponent(code)}/`);
+}
+
+export interface ApiNotification {
+  id: string;
+  notification_type: string;
+  context: Record<string, unknown> | null;
+  read: boolean;
+  created_at: string;
+}
+export function getNotifications(page = 1): Promise<{ notifications: ApiNotification[]; unread_count: number; total: number }> {
+  return apiFetch(`/social/notifications/?page=${page}&limit=20`);
+}
+export function markNotificationRead(id: string): Promise<unknown> {
+  return apiFetch(`/social/notifications/${id}/read/`, { method: "PUT" });
+}
+export function markAllNotificationsRead(): Promise<unknown> {
+  return apiFetch(`/social/notifications/read-all/`, { method: "PUT" });
+}
+
+export interface MediaShort {
+  id: string;
+  title: string;
+  description: string;
+  video_url: string;
+  thumbnail_url: string | null;
+  tags: string[];
+  view_count: number;
+  status: string;
+  creator: string | null;
+  creator_username: string | null;
+  created_at: string;
+}
+export function getShorts(): Promise<{ shorts: MediaShort[] }> {
+  return apiFetch(`/social/shorts/`);
+}
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  body: string;
+  author_username: string | null;
+  is_pinned: boolean;
+  status: string;
+  published_at: string | null;
+  created_at: string;
+}
+export function getNews(): Promise<NewsArticle[] | { articles: NewsArticle[] }> {
+  return apiFetch(`/social/news/`);
+}
+export function getHomeStats(): Promise<{ total_players: number; total_tournaments: number; total_prize_bdt: number; total_countries: number }> {
+  return apiFetch(`/social/home/stats/`);
+}
+
+/* ───────────────────────── Phase 7: Staff Consoles ──────────────────────────
+   Admin dashboard, payment ledger (UJ-006), player moderation, audit log,
+   referee profile. All admin endpoints require admin/master platform_role. */
+
+export interface AdminDashboard {
+  active_users_now: number;
+  pending_payments: number;
+  active_matches: number;
+  pending_transfers: number;
+  disputed_battles: number;
+  total_players: number;
+  total_clubs: number;
+}
+export function getAdminDashboard(): Promise<AdminDashboard> {
+  return apiFetch(`/admin/dashboard/`);
+}
+
+export interface PaymentEntry {
+  id: string;
+  tournament: string;
+  tournament_name: string;
+  club: string;
+  club_name: string;
+  txn_id: string;
+  whatsapp: string | null;
+  manager_handle: string | null;
+  player_count: number;
+  payment_status: "Pending" | "Approved" | "Rejected";
+  approved_by_username: string | null;
+  approved_at: string | null;
+  rejected_at: string | null;
+  reject_reason: string | null;
+  created_at: string;
+}
+export function getAdminPayments(status?: string): Promise<PaymentEntry[]> {
+  return apiFetch(`/economy/admin/payments/${status ? `?status=${status}` : ""}`);
+}
+export function approvePayment(entryId: string): Promise<unknown> {
+  return apiFetch(`/economy/admin/payments/${entryId}/approve/`, { method: "PUT" });
+}
+export function rejectPayment(entryId: string, reason: string): Promise<unknown> {
+  return apiFetch(`/economy/admin/payments/${entryId}/reject/`, {
+    method: "PUT",
+    body: JSON.stringify({ reject_reason: reason }),
+  });
+}
+
+export interface AdminPlayer {
+  id: string;
+  username: string;
+  profile_photo_url: string | null;
+  platform_role: string;
+  device_type: string;
+  is_verified: boolean;
+  is_banned: boolean;
+  is_suspended: boolean;
+  ban_reason: string;
+  location_country: string;
+}
+export function getAdminPlayers(params: { q?: string; role?: string; status?: string } = {}): Promise<{ total: number; players: AdminPlayer[] }> {
+  const qs = new URLSearchParams();
+  if (params.q) qs.set("q", params.q);
+  if (params.role) qs.set("role", params.role);
+  if (params.status) qs.set("status", params.status);
+  const q = qs.toString();
+  return apiFetch(`/admin/players/${q ? `?${q}` : ""}`);
+}
+export function banPlayer(playerId: string, reason: string): Promise<unknown> {
+  return apiFetch(`/admin/players/${playerId}/ban/`, { method: "POST", body: JSON.stringify({ reason }) });
+}
+export function suspendPlayer(playerId: string, durationHours: number, reason: string): Promise<unknown> {
+  return apiFetch(`/admin/players/${playerId}/suspend/`, { method: "POST", body: JSON.stringify({ duration_hours: durationHours, reason }) });
+}
+export function verifyPlayer(playerId: string, isVerified: boolean): Promise<unknown> {
+  return apiFetch(`/admin/players/${playerId}/verify/`, { method: "PUT", body: JSON.stringify({ is_verified: isVerified }) });
+}
+export function assignRole(playerId: string, platformRole: string): Promise<unknown> {
+  return apiFetch(`/admin/players/${playerId}/role/`, { method: "PUT", body: JSON.stringify({ platform_role: platformRole }) });
+}
+
+export interface AuditLogRow {
+  id: string;
+  admin_username: string;
+  action_type: string;
+  target_entity: string;
+  target_id: string | null;
+  note: string | null;
+  created_at: string;
+}
+export function getAuditLog(page = 1): Promise<{ total: number; logs: AuditLogRow[] }> {
+  return apiFetch(`/admin/audit-log/?page=${page}&limit=50`);
+}
+
+export interface RefereeProfile {
+  player_id: string;
+  username: string;
+  profile_photo_url: string | null;
+  club_name: string | null;
+  matches_officiated: number;
+  avg_star_rating: number | null;
+  pinned_review: { comment: string; stars: number; rated_by: string } | null;
+}
+export function getRefereeProfile(playerId: string): Promise<RefereeProfile> {
+  return apiFetch(`/social/referees/${playerId}/`);
+}

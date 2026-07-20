@@ -7374,3 +7374,134 @@ html.cursor-custom,html.cursor-custom *{cursor:none !important}
 .eb-asset .nm{font-size:.68rem;color:#DFEDE2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .eb-asset .pr{display:inline-flex;align-items:center;gap:.25rem;font-family:var(--fo);font-size:.55rem;color:#7DE8FF}
 .eb-asset .pr.free{color:rgba(170,190,180,.55)}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB HERO v2 — "Command Deck" (brand headline left, live ops panel right).
+   Replaces the old .hero (now dormant). Static paint, compositor-only motion:
+   the only animations are the shared livedot pulse and the countdown text.
+   ══════════════════════════════════════════════════════════════════════════ */
+.eb-hero{position:relative;padding:calc(var(--nav-h) + clamp(2.2rem,6vh,4.5rem)) 1.4rem clamp(2.4rem,6vh,4rem);overflow:hidden}
+.eb-hero-bg{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(115deg,rgba(57,211,83,.07) 0%,transparent 34%),
+  linear-gradient(295deg,rgba(255,184,0,.055) 0%,transparent 30%),
+  repeating-linear-gradient(0deg,rgba(57,211,83,.033) 0 1px,transparent 1px 44px),
+  repeating-linear-gradient(90deg,rgba(57,211,83,.033) 0 1px,transparent 1px 44px)}
+.eb-hero-bg::after{content:'';position:absolute;left:-10%;top:18%;width:55%;height:2px;background:linear-gradient(90deg,transparent,rgba(57,211,83,.35),transparent);transform:rotate(-18deg)}
+.eb-hero-in{position:relative;max-width:1180px;margin:0 auto;display:flex;gap:clamp(1.6rem,4vw,3.5rem);align-items:center;flex-wrap:wrap}
+.eb-hero-copy{flex:1.25;min-width:min(100%,340px)}
+.eb-hero-kick{display:flex;align-items:center;gap:.6rem;font-family:var(--fo);font-size:clamp(.52rem,1.4vw,.62rem);letter-spacing:.22em;color:var(--lime);text-transform:uppercase;margin-bottom:1rem}
+.eb-hero-kick .bk{width:26px;height:10px;border-left:2px solid var(--gold);border-top:2px solid var(--gold);flex-shrink:0;transform:translateY(2px)}
+.eb-hero-h1{font-family:var(--fh);font-size:clamp(2.9rem,9vw,5.6rem);line-height:.92;letter-spacing:.02em;color:#fff;margin-bottom:1.1rem}
+.eb-hero-h1 .ac{background:linear-gradient(135deg,var(--lime),var(--lime2));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 24px rgba(0,255,127,.45))}
+.eb-hero-h1 .go{background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(255,184,0,.4))}
+.eb-hero-sub{color:rgba(196,212,200,.82);font-size:clamp(.86rem,2.3vw,.98rem);line-height:1.75;max-width:520px;margin-bottom:1.5rem}
+.eb-hero-ctas{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.eb-hero-trust{list-style:none;display:flex;gap:1.1rem;flex-wrap:wrap;margin:0 0 1.7rem;padding:0;font-family:var(--fo);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(178,196,182,.65)}
+.eb-hero-stats{display:flex;gap:clamp(1.1rem,3.5vw,2.4rem);flex-wrap:wrap;padding-top:1.4rem;border-top:1px solid rgba(57,211,83,.14)}
+.eb-hero-stats div{display:flex;flex-direction:column;gap:.15rem}
+.eb-hero-stats b{font-family:var(--fh);font-size:clamp(1.6rem,4.5vw,2.2rem);line-height:1;color:#fff}
+.eb-hero-stats .reg b{color:var(--lime);filter:drop-shadow(0 0 10px rgba(57,211,83,.5));font-size:clamp(1.1rem,3.4vw,1.4rem);padding-top:.35rem}
+.eb-hero-stats span{font-family:var(--fo);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(170,190,175,.6)}
+
+/* ops panel */
+.eb-ops{flex:1;min-width:min(100%,320px);max-width:420px;background:rgba(7,4,16,.82);border:1px solid rgba(57,211,83,.22);clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);padding:1.1rem 1.2rem 1.3rem;position:relative}
+.eb-ops::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(210,255,220,.02) 0 1px,transparent 1px 3px)}
+.eb-ops-head{display:flex;align-items:center;gap:.5rem;font-family:var(--fo);font-size:.58rem;font-weight:700;letter-spacing:.24em;color:var(--lime);margin-bottom:1rem}
+.eb-ops-head .ln{flex:1;height:1px;background:linear-gradient(90deg,rgba(57,211,83,.4),transparent)}
+.eb-ops-block{padding:.9rem 0;border-top:1px solid rgba(255,255,255,.07)}
+.eb-ops-block:first-of-type{border-top:none;padding-top:0}
+.eb-ops-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+.eb-ops-row.top{margin-bottom:.5rem}
+.eb-ops-row .chip{font-family:var(--fo);font-size:.52rem;font-weight:700;letter-spacing:.14em;color:#031007;background:var(--lime);padding:.22rem .5rem}
+.eb-ops-row .mode{font-family:var(--fo);font-size:.55rem;letter-spacing:.12em;color:var(--gold)}
+.eb-ops-row .fee{font-family:var(--fo);font-size:.6rem;color:rgba(200,215,205,.75)}
+.eb-ops-name{font-family:var(--fh);font-size:1.35rem;letter-spacing:.04em;color:#fff;margin-bottom:.7rem}
+.eb-ops-cd{display:flex;gap:.45rem;margin-bottom:.85rem}
+.eb-ops-cd .cell{flex:1;display:flex;flex-direction:column;align-items:center;gap:.1rem;background:rgba(255,255,255,.035);border:1px solid rgba(57,211,83,.18);padding:.45rem .2rem}
+.eb-ops-cd b{font-family:var(--fh);font-size:1.45rem;line-height:1;color:var(--lime)}
+.eb-ops-cd i{font-family:var(--fo);font-style:normal;font-size:.48rem;letter-spacing:.2em;color:rgba(170,190,175,.6)}
+.eb-ops-slots{margin-bottom:.85rem}
+.eb-ops-slots .bar{height:7px;background:rgba(255,255,255,.07);clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);overflow:hidden}
+.eb-ops-slots .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--gold));transition:width .6s var(--e1)}
+.eb-ops-slots .lbl{display:flex;justify-content:space-between;margin-top:.4rem;font-family:var(--fo);font-size:.55rem;letter-spacing:.06em;color:rgba(185,200,190,.7)}
+.eb-ops-sub{font-family:var(--fo);font-size:.52rem;letter-spacing:.2em;color:var(--gold);margin-bottom:.6rem}
+.eb-ops-ladder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.45rem}
+.eb-ops-ladder li{display:flex;align-items:center;gap:.55rem;font-size:.85rem}
+.eb-ops-ladder .cr{width:20px;text-align:center}
+.eb-ops-ladder .av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;overflow:hidden;background:#0c0820;border:1px solid rgba(57,211,83,.4);font-family:var(--fh);font-size:.8rem;color:var(--lime)}
+.eb-ops-ladder .av img{width:100%;height:100%;object-fit:cover}
+.eb-ops-ladder a{flex:1;min-width:0;color:#E6F3E9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-ops-ladder a:hover{color:var(--lime)}
+.eb-ops-ladder b{font-family:var(--fo);font-size:.62rem;color:var(--gold)}
+.eb-ops-more{display:inline-block;margin-top:.7rem;font-family:var(--fo);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+
+@media(max-width:900px){
+  .eb-hero-in{flex-direction:column;align-items:stretch}
+  .eb-ops{max-width:none}
+}
+@media(max-width:520px){
+  .eb-hero{padding-left:1.1rem;padding-right:1.1rem}
+  .eb-hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .eb-ops-cd b{font-size:1.2rem}
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB COMMUNITY & REACH (Phase 6) — country cards / bell panel / shorts / bot
+   ══════════════════════════════════════════════════════════════════════════ */
+.eb-country-card{display:flex;align-items:center;gap:.85rem;padding:.9rem 1rem;background:rgba(10,6,22,.6);border:1px solid rgba(255,255,255,.08);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:border-color .2s,transform .18s var(--e1);cursor:none}
+.eb-country-card:hover{border-color:rgba(57,211,83,.35);transform:translateY(-2px)}
+.eb-country-card .fl{font-size:1.9rem;flex-shrink:0}
+.eb-country-card .bd{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem}
+.eb-country-card .bd b{font-family:var(--fb);font-weight:600;color:#EAF5EC}
+.eb-country-card .bd span{font-family:var(--fo);font-size:.55rem;letter-spacing:.08em;color:rgba(170,190,180,.6);text-transform:uppercase}
+.eb-country-card .ar{color:var(--lime)}
+
+/* bell panel list */
+.eb-bell-head{display:flex;align-items:center;justify-content:space-between;font-family:var(--fo);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.eb-bell-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;max-height:320px;overflow-y:auto}
+.eb-bell-list li{display:flex;flex-direction:column;gap:.15rem;padding:.55rem .3rem;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
+.eb-bell-list li:hover{background:rgba(57,211,83,.05)}
+.eb-bell-list li.read{opacity:.55}
+.eb-bell-list .tx{font-size:.8rem;color:#E6F3E9}
+.eb-bell-list time{font-size:.62rem;color:rgba(170,190,180,.5)}
+
+/* shorts snap feed (FR-053, FR-056 z-isolation under navbar) */
+.eb-shorts{height:calc(100dvh - var(--nav-h));overflow-y:auto;scroll-snap-type:y mandatory;position:relative;z-index:1;background:#000}
+.eb-short{height:calc(100dvh - var(--nav-h));scroll-snap-align:start;position:relative;display:grid;place-items:center}
+.eb-short video{max-height:100%;max-width:min(100%,480px);width:100%;object-fit:contain;background:#000}
+.eb-short-meta{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.2rem 1.3rem;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);display:flex;flex-direction:column;gap:.25rem;pointer-events:none}
+.eb-short-meta b{font-family:var(--fh);font-size:1.1rem;letter-spacing:.04em;color:#fff}
+.eb-short-meta span{font-size:.72rem;color:rgba(210,225,215,.75)}
+.eb-short-meta .tags{color:var(--lime);font-size:.66rem}
+
+/* chatbot bubble (REQ-55 shell) */
+.eb-bot-fab{position:fixed;right:18px;bottom:18px;z-index:640;width:54px;height:54px;display:grid;place-items:center;background:rgba(7,4,16,.92);border:1.5px solid rgba(57,211,83,.5);border-radius:50%;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.5),0 0 14px rgba(57,211,83,.25);transition:transform .2s var(--e1),border-color .2s}
+.eb-bot-fab:hover{transform:translateY(-2px) scale(1.05);border-color:var(--lime)}
+.eb-bot-panel{position:fixed;right:18px;bottom:82px;z-index:640;width:min(320px,calc(100vw - 36px));background:rgba(8,5,18,.97);border:1px solid rgba(57,211,83,.3);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);animation:ebDrop .2s var(--e1)}
+.eb-bot-head{display:flex;align-items:center;gap:.5rem;padding:.7rem .9rem;font-family:var(--fo);font-size:.58rem;font-weight:700;letter-spacing:.2em;color:var(--lime);border-bottom:1px solid rgba(57,211,83,.18)}
+.eb-bot-head .x{margin-left:auto;background:none;border:none;color:rgba(200,215,205,.6);cursor:pointer;font-size:.8rem}
+.eb-bot-head .x:hover{color:#fff}
+.eb-bot-body{padding:1rem .95rem 1.1rem;display:flex;flex-direction:column;gap:.6rem;font-size:.82rem;color:rgba(205,220,210,.85);line-height:1.6}
+.eb-bot-body .hi{font-size:.92rem;color:#fff}
+.eb-bot-body .dim{font-size:.72rem;color:rgba(170,190,180,.55)}
+.eb-bot-body b{color:var(--gold)}
+@media(max-width:520px){.eb-bot-fab{right:12px;bottom:12px}.eb-bot-panel{right:12px;bottom:74px}}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB ADMIN CONSOLE (Phase 7) — dense-data controls
+   ══════════════════════════════════════════════════════════════════════════ */
+.eb-admin-search{width:100%;max-width:360px;background:#0A0714;border:1px solid rgba(255,255,255,.15);color:#EAF5EC;font-family:var(--fb);font-size:.85rem;padding:.55rem .75rem;border-radius:3px;margin-bottom:1rem}
+.eb-admin-search:focus{outline:none;border-color:rgba(57,211,83,.5)}
+.eb-admin-textarea{width:100%;background:#0A0714;border:1px solid rgba(255,255,255,.15);color:#EAF5EC;font-family:var(--fb);font-size:.82rem;padding:.55rem .7rem;border-radius:3px;resize:vertical;margin-top:.25rem}
+.eb-admin-textarea:focus{outline:none;border-color:rgba(255,120,120,.5)}
+.eb-admin-role{background:#0A0714;border:1px solid rgba(255,184,0,.3);color:var(--gold);font-family:var(--fo);font-size:.65rem;padding:.3rem .45rem;border-radius:3px;cursor:pointer}
+.eb-admin-role:focus{outline:none;border-color:var(--gold)}
+
+/* referee card (§1.28/1.35) */
+.eb-ref-stats{display:flex;gap:1.4rem;flex-wrap:wrap}
+.eb-ref-stars{color:var(--gold);font-size:1.1rem;letter-spacing:.1em}
+.eb-ref-review{margin-top:.7rem;padding:.7rem .8rem;background:rgba(255,184,0,.05);border-left:2px solid rgba(255,184,0,.4);font-size:.82rem;color:rgba(210,222,212,.85);font-style:italic}
+.eb-ref-review .by{display:block;margin-top:.3rem;font-style:normal;font-family:var(--fo);font-size:.6rem;letter-spacing:.1em;color:rgba(170,190,180,.6);text-transform:uppercase}

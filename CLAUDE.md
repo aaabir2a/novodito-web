@@ -6,7 +6,7 @@ Bangladesh eFootball tournament platform. **Brand: eBattleVerse / eBattleVerse.c
 
 ## Run
 
-- Frontend: `npm run dev:http` → http://localhost:3000. (`npm run dev` = `--experimental-https`, HANGS on this machine: mkcert needs an elevated UAC prompt to install its root CA. Until user does that once in an admin terminal, use dev:http.)
+- Frontend: `NODE_OPTIONS=--max-old-space-size=4096 npm run dev:http` → http://localhost:3000. The heap flag matters: Turbopack on this machine's slow FS repeatedly crashes with V8 OOM (exit 134, `ReportExternalAllocationLimitReached`) at the default heap. (`npm run dev` = `--experimental-https`, HANGS: mkcert needs an elevated UAC prompt to install its root CA. Until user does that once in an admin terminal, use dev:http.)
 - Backend: from `../eBattleVerse/backend`: `DJANGO_SETTINGS_MODULE=config.settings.dev .venv/Scripts/python.exe manage.py runserver 127.0.0.1:8000` (venv exists; SQLite dev DB seeded).
 - Logins: player `secure_sam` / `Kr4tos!Neon7` (PS5). Django superuser `admin` / `Admin@12345`.
 - Typecheck: `npx tsc --noEmit`. No test suite.

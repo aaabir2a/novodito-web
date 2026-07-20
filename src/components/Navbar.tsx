@@ -15,9 +15,9 @@ const RAIL: { href: string; label: string }[] = [
   { href: "/rankings", label: "Rankings" },
   { href: "/matches", label: "Matches" },
   { href: "/live", label: "Live" },
-  { href: "/community", label: "Community" },
   { href: "/clubs", label: "Clubs" },
-  { href: "/news", label: "News" },
+  { href: "/community", label: "Community" },
+  { href: "/shorts", label: "Shorts" },
   { href: "/shop", label: "Shop" },
 ];
 

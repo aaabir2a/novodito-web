@@ -7505,3 +7505,49 @@ html.cursor-custom,html.cursor-custom *{cursor:none !important}
 .eb-ref-stars{color:var(--gold);font-size:1.1rem;letter-spacing:.1em}
 .eb-ref-review{margin-top:.7rem;padding:.7rem .8rem;background:rgba(255,184,0,.05);border-left:2px solid rgba(255,184,0,.4);font-size:.82rem;color:rgba(210,222,212,.85);font-style:italic}
 .eb-ref-review .by{display:block;margin-top:.3rem;font-style:normal;font-family:var(--fo);font-size:.6rem;letter-spacing:.1em;color:rgba(170,190,180,.6);text-transform:uppercase}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EB HOME HUB — feature directory / tournament minis / 2-col / live teaser
+   ══════════════════════════════════════════════════════════════════════════ */
+.eb-feat-grid{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+.eb-feat-card{display:flex;align-items:center;gap:.75rem;padding:.85rem .95rem;background:rgba(10,6,22,.6);border:1px solid rgba(255,255,255,.08);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:border-color .2s,transform .18s var(--e1);cursor:none}
+.eb-feat-card:hover{border-color:rgba(57,211,83,.4);transform:translateY(-2px)}
+.eb-feat-card .ic{font-size:1.5rem;flex-shrink:0;width:38px;text-align:center;filter:drop-shadow(0 0 8px rgba(57,211,83,.3))}
+.eb-feat-card .bd{flex:1;min-width:0;display:flex;flex-direction:column;gap:.12rem}
+.eb-feat-card .bd b{font-family:var(--fb);font-weight:600;font-size:.92rem;color:#EAF5EC;display:flex;align-items:center;gap:.4rem}
+.eb-feat-card .bd b .tag{font-family:var(--fo);font-style:normal;font-size:.42rem;letter-spacing:.12em;color:#000;background:var(--gold);padding:.05rem .3rem;border-radius:2px}
+.eb-feat-card .bd span{font-size:.72rem;color:rgba(175,190,180,.65);line-height:1.35}
+.eb-feat-card .ar{color:rgba(57,211,83,.5);flex-shrink:0;transition:color .2s,transform .2s}
+.eb-feat-card:hover .ar{color:var(--lime);transform:translateX(3px)}
+
+/* tournament mini cards */
+.eb-tmini-grid{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.eb-tmini{display:flex;flex-direction:column;gap:.5rem;padding:.95rem 1rem;background:linear-gradient(180deg,rgba(18,12,36,.7),rgba(6,2,18,.85));border:1px solid rgba(255,255,255,.09);clip-path:polygon(11px 0,100% 0,100% calc(100% - 11px),calc(100% - 11px) 100%,0 100%,0 11px);transition:border-color .2s,transform .18s var(--e1);cursor:none}
+.eb-tmini:hover{border-color:rgba(255,184,0,.4);transform:translateY(-2px)}
+.eb-tmini .top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.eb-tmini .top .mode{font-family:var(--fo);font-size:.55rem;letter-spacing:.12em;color:var(--gold)}
+.eb-tmini .nm{font-family:var(--fh);font-size:1.15rem;letter-spacing:.03em;color:#fff;line-height:1.1}
+.eb-tmini .bar{height:6px;background:rgba(255,255,255,.07);clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);overflow:hidden}
+.eb-tmini .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--gold))}
+.eb-tmini .ft,.eb-tmini .ft2{display:flex;justify-content:space-between;gap:.5rem;font-family:var(--fo);font-size:.6rem;letter-spacing:.05em;color:rgba(185,200,190,.7)}
+.eb-tmini .ft .pz{color:var(--lime)}
+.eb-tmini .ft2{font-size:.56rem;color:rgba(170,190,180,.55)}
+
+/* generic two-column home layout */
+.eb-home-2col{display:grid;gap:1rem;grid-template-columns:1fr 1fr}
+@media(max-width:760px){.eb-home-2col{grid-template-columns:1fr}}
+
+/* live teaser band */
+.eb-live-teaser{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;padding:1.6rem 1.8rem;background:
+  radial-gradient(circle at 12% 30%,rgba(255,51,85,.09),transparent 55%),
+  linear-gradient(120deg,rgba(57,211,83,.06),rgba(10,6,22,.7));
+  border:1px solid rgba(255,51,85,.28);
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px)}
+.eb-live-teaser .tx{flex:1;min-width:260px}
+.eb-live-teaser h3{font-family:var(--fh);font-size:1.5rem;letter-spacing:.03em;color:#fff;margin-bottom:.4rem}
+.eb-live-teaser p{font-size:.85rem;color:rgba(200,215,205,.8);line-height:1.6;max-width:520px}
+@media(max-width:520px){
+  .eb-tmini-grid,.eb-feat-grid{grid-template-columns:1fr}
+  .sp-grid{grid-template-columns:1fr 1fr !important}
+}

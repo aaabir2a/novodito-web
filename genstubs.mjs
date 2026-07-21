@@ -2,18 +2,18 @@ import fs from 'fs';
 const routes = [
   ['tournaments','🏆','Tournaments','All 2026 eFootball tournaments with brackets, schedules, and live status.'],
   ['rankings','📊','Rankings','National leaderboard updated weekly. Track top players across the 2026 season.'],
-  ['matches','⚽','Matches','Match results, fixtures, and live scores from every Nobodito event.'],
+  ['matches','⚽','Matches','Match results, fixtures, and live scores from every eBattleVerse event.'],
   ['news','📰','News','Tournament announcements, player updates, and official partner news.'],
   ['shop','🛒','Official Store','Jerseys, merch, and collectibles from Bangladesh\'s #1 eFootball platform.'],
   ['gallery','📸','Gallery','Photos and highlights from tournaments, finals, and community events.'],
-  ['clubs','🛡️','Clubs','Registered clubs, rosters, and standings across the Nobodito league.'],
+  ['clubs','🛡️','Clubs','Registered clubs, rosters, and standings across the eBattleVerse league.'],
   ['fixtures','📅','Fixtures','Upcoming match schedule across all active tournaments.'],
   ['register','📝','Player Registration','Join the 2026 season. ৳600 entry fee. All skill levels welcome.'],
   ['sponsorship','🤝','Sponsorship','Partner with Bangladesh\'s premier eFootball tournament organizer.'],
-  ['about','ℹ️','About Nobodito','Official Konami eFootball partner building competitive gaming in Bangladesh.'],
-  ['contact','📞','Contact','Get in touch with the Nobodito Gaming team.'],
+  ['about','ℹ️','About eBattleVerse','Official Konami eFootball partner building competitive gaming in Bangladesh.'],
+  ['contact','📞','Contact','Get in touch with the eBattleVerse team.'],
   ['login','👤','Player Login','Sign in to your player portal to manage registrations and stats.'],
-  ['admin','🔐','Admin','Administrator access to the Nobodito management console.'],
+  ['admin','🔐','Admin','Administrator access to the eBattleVerse management console.'],
 ];
 const titleCase = s => s.split(' ').map(w=>w).join(' ');
 for(const [slug,icon,title,blurb] of routes){

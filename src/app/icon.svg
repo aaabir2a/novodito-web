@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <g transform="rotate(-22 256 256)">
+    <ellipse cx="256" cy="256" rx="240" ry="80" fill="none" stroke="#FFB800" stroke-width="16"/>
+  </g>
+  <polygon points="256,66 422,162 422,350 256,446 90,350 90,162"
+           fill="#05010F" stroke="#39D353" stroke-width="26" stroke-linejoin="round"/>
+  <polygon points="304,110 180,282 250,282 210,406 338,226 264,226"
+           fill="#FFC81E" stroke="#FFB800" stroke-width="6" stroke-linejoin="round"/>
+</svg>

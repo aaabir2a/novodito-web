@@ -1,9 +1,10 @@
 {
-  "name": "novodito-web",
+  "name": "ebattleverse-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --experimental-https",
+    "dev:http": "set NODE_OPTIONS=--max-old-space-size=4096&& next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

@@ -4,17 +4,40 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/auth-context";
+import WalletPill from "@/components/system/WalletPill";
+import NotificationBell from "@/components/system/NotificationBell";
 
-const NAV: { href: string; icon: string; label: string }[] = [
+// Rail = final IA (UX_UI_PLAN §3); the rest live in the mobile menu + footer.
+const RAIL: { href: string; label: string }[] = [
+  { href: "/", label: "Home" },
+  { href: "/tournaments", label: "Tournaments" },
+  { href: "/rankings", label: "Rankings" },
+  { href: "/matches", label: "Matches" },
+  { href: "/live", label: "Live" },
+  { href: "/clubs", label: "Clubs" },
+  { href: "/community", label: "Community" },
+  { href: "/shorts", label: "Shorts" },
+  { href: "/shop", label: "Shop" },
+];
+
+const MENU: { href: string; icon: string; label: string }[] = [
   { href: "/", icon: "🏠", label: "Home" },
   { href: "/tournaments", icon: "🏆", label: "Tournaments" },
   { href: "/rankings", icon: "📊", label: "Rankings" },
   { href: "/matches", icon: "⚽", label: "Matches" },
+  { href: "/live", icon: "📡", label: "Live" },
+  { href: "/community", icon: "🌍", label: "Community" },
+  { href: "/fixtures", icon: "📅", label: "Fixtures" },
   { href: "/news", icon: "📰", label: "News" },
   { href: "/shop", icon: "🛒", label: "Shop" },
-  { href: "/gallery", icon: "📸", label: "Gallery" },
   { href: "/clubs", icon: "🛡️", label: "Clubs" },
-  { href: "/fixtures", icon: "📅", label: "Fixtures" },
+  { href: "/gallery", icon: "📸", label: "Gallery" },
+  { href: "/shorts", icon: "🎬", label: "Shorts" },
+  { href: "/wallet", icon: "🪙", label: "Wallet" },
+  { href: "/studio", icon: "🎨", label: "Card Studio" },
+  { href: "/wars", icon: "⚔️", label: "Club Wars" },
+  { href: "/coming-soon", icon: "🚀", label: "Coming Soon" },
   { href: "/register", icon: "📝", label: "Register" },
   { href: "/sponsorship", icon: "🤝", label: "Sponsors" },
   { href: "/about", icon: "ℹ️", label: "About" },
@@ -29,6 +52,7 @@ const LANGS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lang, setLang] = useState("en");
@@ -53,76 +77,81 @@ export default function Navbar() {
 
   return (
     <>
-      <nav id="nb" className={scrolled ? "sc" : ""}>
-        <Link className="nl" href="/">
-          <div className="nl-iw">
+      <nav id="hud-nav" className={scrolled ? "sc" : ""}>
+        <div className="hn-frame" aria-hidden />
+
+        <Link className="hn-logo" href="/">
+          <span className="hn-hex">
             <Image
-              id="n-lg"
-              src="/img/n-lg.jpg"
-              alt="Nobodito Gaming logo"
-              width={44}
-              height={44}
+              src="/logo.svg"
+              alt="eBattleVerse logo"
+              width={32}
+              height={32}
               priority
+              unoptimized
             />
-          </div>
-          <div className="nl-t">
-            NOBODITO <span className="ac">GAMING</span>
-          </div>
+          </span>
+          <span className="hn-word">
+            eBATTLE<b>VERSE</b>
+          </span>
         </Link>
 
-        <ul className="nls">
-          {NAV.map((item) => (
+        <ul className="hn-rail">
+          {RAIL.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                data-pg={item.label.toLowerCase()}
-                className={isActive(item.href) ? "on" : ""}
+                className={`hn-link${isActive(item.href) ? " on" : ""}`}
               >
-                <span className="ni">{item.icon}</span>
                 {item.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        <div className="nr">
-          <div className="nlng">
+        <div className="hn-ops">
+          <div className="hn-lang">
             {LANGS.map((l) => (
               <button
                 key={l.code}
-                className={`lb${lang === l.code ? " on" : ""}`}
-                data-lg={l.code}
+                className={`hn-lb${lang === l.code ? " on" : ""}`}
                 onClick={() => setLang(l.code)}
               >
-                <span>{l.label}</span>
+                {l.label}
               </button>
             ))}
           </div>
-          <Link className="ab" href="/login">
-            <span>👤 Player Login</span>
-          </Link>
-          <Link
-            className="ab"
-            href="/clubs/login"
-            style={{ borderColor: "rgba(255,184,0,.3)", color: "var(--gold)" }}
-          >
+
+          {!loading && user ? (
+            <>
+              <WalletPill />
+              <NotificationBell />
+              <Link className="hn-chip lime" href="/profile">
+                <span>👤 {user.username}</span>
+              </Link>
+            </>
+          ) : (
+            <Link className="hn-chip lime" href="/login">
+              <span>👤 Login</span>
+            </Link>
+          )}
+          <Link className="hn-chip desk" href="/clubs/login">
             <span>🛡️ Club</span>
           </Link>
-          <Link className="ab" href="/admin">
+          <Link className="hn-chip ghost desk" href="/admin">
             <span>🔐 Admin</span>
           </Link>
-        </div>
 
-        <button
-          className="hb"
-          id="hb"
-          aria-label="Open menu"
-          onClick={() => setMobileOpen(true)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+          <button
+            className="hn-burger"
+            aria-label="Open menu"
+            onClick={() => setMobileOpen(true)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}
@@ -135,7 +164,7 @@ export default function Navbar() {
         >
           ✕
         </button>
-        {NAV.map((item) => (
+        {MENU.map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -144,6 +173,15 @@ export default function Navbar() {
             {item.icon} {item.label}
           </Link>
         ))}
+        <Link href={user ? "/profile" : "/login"} onClick={() => setMobileOpen(false)}>
+          👤 {user ? user.username : "Player Login"}
+        </Link>
+        <Link href="/clubs/login" onClick={() => setMobileOpen(false)}>
+          🛡️ Club Login
+        </Link>
+        <Link href="/admin" onClick={() => setMobileOpen(false)}>
+          🔐 Admin
+        </Link>
       </div>
     </>
   );

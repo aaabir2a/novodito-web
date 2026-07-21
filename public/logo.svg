@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="eBattleVerse logo">
+  <defs>
+    <linearGradient id="bolt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF0A0"/>
+      <stop offset=".45" stop-color="#FFD000"/>
+      <stop offset="1" stop-color="#FFB800"/>
+    </linearGradient>
+    <linearGradient id="hexEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#00FF7F"/>
+      <stop offset="1" stop-color="#39D353"/>
+    </linearGradient>
+    <filter id="glowL" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#39D353" flood-opacity=".55"/>
+    </filter>
+    <filter id="glowG" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#FFB800" flood-opacity=".6"/>
+    </filter>
+  </defs>
+
+  <!-- orbit: the "Verse" -->
+  <g transform="rotate(-22 256 256)">
+    <ellipse cx="256" cy="256" rx="234" ry="72" fill="none" stroke="#FFB800" stroke-width="7" opacity=".8"/>
+    <ellipse cx="256" cy="256" rx="234" ry="72" fill="none" stroke="#FFB800" stroke-width="7" opacity=".25" filter="url(#glowG)"/>
+    <!-- orbit node -->
+    <circle cx="482" cy="238" r="11" fill="#FFB800" filter="url(#glowG)"/>
+  </g>
+
+  <!-- hex arena: the "Battle"ground -->
+  <polygon points="256,76 412,166 412,346 256,436 100,346 100,166"
+           fill="#05010F" stroke="url(#hexEdge)" stroke-width="14" stroke-linejoin="round" filter="url(#glowL)"/>
+  <polygon points="256,106 386,181 386,331 256,406 126,331 126,181"
+           fill="none" stroke="#39D353" stroke-width="2.5" opacity=".38"/>
+
+  <!-- strike bolt -->
+  <polygon points="300,118 188,274 251,274 214,394 330,230 264,230"
+           fill="url(#bolt)" stroke="#FFB800" stroke-width="4" stroke-linejoin="round" filter="url(#glowG)"/>
+
+  <!-- HUD target brackets -->
+  <path d="M56 118 V64 H124" fill="none" stroke="#39D353" stroke-width="10" stroke-linecap="square"/>
+  <path d="M456 394 V448 H388" fill="none" stroke="#39D353" stroke-width="10" stroke-linecap="square"/>
+</svg>

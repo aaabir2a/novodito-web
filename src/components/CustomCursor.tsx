@@ -36,11 +36,13 @@ export default function CustomCursor() {
       ry = my,
       gx = mx,
       gy = my,
-      raf = 0;
+      raf = 0,
+      idle = true; // once trailers converge, stop writing styles entirely
 
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
+      idle = false;
     };
     const onOver = (e: MouseEvent) => {
       if ((e.target as Element)?.closest?.(HOVER_SELECTOR))
@@ -51,17 +53,27 @@ export default function CustomCursor() {
         document.body.classList.remove("ch");
     };
 
+    // Move via transform (compositor-only). left/top invalidated layout on
+    // every frame and made the whole page feel laggy while the mouse moved.
+    const place = (el: HTMLElement, x: number, y: number) => {
+      el.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
+    };
+
     const loop = () => {
-      rx += (mx - rx) * 0.13;
-      ry += (my - ry) * 0.13;
-      gx += (mx - gx) * 0.06;
-      gy += (my - gy) * 0.06;
-      cd.style.left = mx + "px";
-      cd.style.top = my + "px";
-      cr.style.left = rx + "px";
-      cr.style.top = ry + "px";
-      cg.style.left = gx + "px";
-      cg.style.top = gy + "px";
+      if (!idle) {
+        rx += (mx - rx) * 0.13;
+        ry += (my - ry) * 0.13;
+        gx += (mx - gx) * 0.06;
+        gy += (my - gy) * 0.06;
+        place(cd, mx, my);
+        place(cr, rx, ry);
+        place(cg, gx, gy);
+        // Everything converged? Go idle until the next mousemove.
+        if (Math.abs(mx - rx) < 0.3 && Math.abs(mx - gx) < 0.3 &&
+            Math.abs(my - ry) < 0.3 && Math.abs(my - gy) < 0.3) {
+          idle = true;
+        }
+      }
       raf = requestAnimationFrame(loop);
     };
 

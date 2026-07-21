@@ -953,3 +953,48 @@ export interface RefereeProfile {
 export function getRefereeProfile(playerId: string): Promise<RefereeProfile> {
   return apiFetch(`/social/referees/${playerId}/`);
 }
+
+/* ── Tournament detail + registration (bKash entry flow, FR-057…063) ── */
+export interface TournamentDetail extends ApiTournament {
+  venue_metadata: Record<string, unknown> | null;
+  approved_count: number;
+  approved_clubs: { id: string; name: string; emblem_url: string | null }[];
+}
+export function getTournament(id: string): Promise<TournamentDetail> {
+  return apiFetch(`/tournaments/${id}/`);
+}
+export interface TournamentEntryInput {
+  txn_id: string;
+  whatsapp?: string;
+  manager_handle?: string;
+  player_count?: number;
+}
+export function registerForTournament(tournamentId: string, input: TournamentEntryInput): Promise<unknown> {
+  return apiFetch(`/economy/tournaments/${tournamentId}/entries/`, {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+/* ── Admin: create tournament (FR-014…018) + club referee designation ── */
+export interface TournamentCreateInput {
+  name: string;
+  mode: "LAN" | "Online" | "Hybrid";
+  bracket_type: "RoundRobin" | "SingleElim" | "DoubleElim";
+  max_slots: number;
+  entry_fee_bdt: number;
+  prize_pool_bdt: number;
+  starts_at: string; // ISO, future
+  ends_at: string;   // ISO, after starts_at
+  venue_metadata?: Record<string, unknown>;
+}
+export function createTournament(input: TournamentCreateInput): Promise<{ id: string }> {
+  return apiFetch(`/tournaments/create/`, { method: "POST", body: JSON.stringify(input) });
+}
+/** Manager designates permanent + alternate referees (must be active members). */
+export function designateClubReferees(clubId: string, permanentId: string, alternateId: string): Promise<ClubDetail> {
+  return apiFetch(`/clubs/${clubId}/referees/`, {
+    method: "POST",
+    body: JSON.stringify({ permanent_referee_id: permanentId, alternate_referee_id: alternateId }),
+  });
+}

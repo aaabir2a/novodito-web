@@ -101,7 +101,7 @@ export default function HeroOps({
 
           <div className="eb-ops-row">
             <span className="fee">Entry {bdt(tournament.entry_fee_bdt)}</span>
-            <Link className="btn btn-lm btn-sm" href="/tournaments">Secure a Slot →</Link>
+            <Link className="btn btn-lm btn-sm" href={`/tournaments/${tournament.id}`}>Secure a Slot →</Link>
           </div>
         </div>
       ) : (

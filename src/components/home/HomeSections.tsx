@@ -64,7 +64,7 @@ export function TournamentMini({ t }: { t: ApiTournament }) {
   const pct = t.max_slots ? Math.min((t.filled_slots / t.max_slots) * 100, 100) : 0;
   const when = t.starts_at ? new Date(t.starts_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "TBD";
   return (
-    <Link href="/tournaments" className="eb-tmini">
+    <Link href={`/tournaments/${t.id}`} className="eb-tmini">
       <div className="top">
         <span className={`eb-status ${t.status === "Registration" ? "verified" : "neutral"}`}>{t.status === "Registration" ? "REG OPEN" : t.status}</span>
         <span className="mode">{t.mode}</span>

@@ -13,6 +13,7 @@ import {
   getClubContracts,
   lookupPlayer,
   invitePlayer,
+  designateClubReferees,
   type ClubDetail,
   type RosterMember,
   type ClubContract,
@@ -49,6 +50,75 @@ function InviteBox({ clubId, onInvited }: { clubId: string; onInvited: () => voi
       <input required placeholder="Player username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <button className="btn btn-lm btn-sm" disabled={busy} type="submit">
         {busy ? "Sending…" : "📨 Invite"}
+      </button>
+    </form>
+  );
+}
+
+function RefereeBox({
+  clubId,
+  roster,
+  current,
+  onDesignated,
+}: {
+  clubId: string;
+  roster: RosterMember[];
+  current: { perm: string | null; alt: string | null };
+  onDesignated: () => void;
+}) {
+  const toast = useToast();
+  const [perm, setPerm] = useState("");
+  const [alt, setAlt] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (perm === alt) {
+      toast.error("Permanent and alternate referees must be different players.");
+      return;
+    }
+    setBusy(true);
+    try {
+      await designateClubReferees(clubId, perm, alt);
+      toast.success("Referees designated 🧑‍⚖️ (their platform role is now referee)");
+      onDesignated();
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Designation failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (roster.length < 2) {
+    return (
+      <p className="hd" style={{ fontSize: ".8rem" }}>
+        Need at least 2 active members to designate a permanent + alternate referee.
+      </p>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: ".55rem" }}>
+      <select className="eb-admin-role" style={{ width: "100%", padding: ".55rem" }} required
+        value={perm} onChange={(e) => setPerm(e.target.value)}>
+        <option value="">Permanent referee…</option>
+        {roster.map((m) => (
+          <option key={m.player_id} value={m.player_id}>
+            {m.username}{current.perm === m.player_id ? " (current)" : ""}
+          </option>
+        ))}
+      </select>
+      <select className="eb-admin-role" style={{ width: "100%", padding: ".55rem" }} required
+        value={alt} onChange={(e) => setAlt(e.target.value)}>
+        <option value="">Alternate referee…</option>
+        {roster.map((m) => (
+          <option key={m.player_id} value={m.player_id}>
+            {m.username}{current.alt === m.player_id ? " (current)" : ""}
+          </option>
+        ))}
+      </select>
+      <button className="btn btn-gd btn-sm" type="submit" disabled={busy || !perm || !alt}>
+        {busy ? "Assigning…" : "🧑‍⚖️ Designate Referees"}
       </button>
     </form>
   );
@@ -167,6 +237,22 @@ export default function ClubPage({ params }: { params: Promise<{ id: string }> }
                     <InviteBox clubId={club.id} onInvited={load} />
                     <p className="eb-wallet-note" style={{ marginTop: ".6rem" }}>
                       The player reviews contract terms when accepting (UJ-005). Roster cap 40.
+                    </p>
+                  </section>
+                  <section className="eb-pf-card">
+                    <h3>Referees (manager · UJ-003)</h3>
+                    <RefereeBox
+                      clubId={club.id}
+                      roster={roster ?? []}
+                      current={{
+                        perm: club.permanent_referee?.id ?? null,
+                        alt: club.alternate_referee?.id ?? null,
+                      }}
+                      onDesignated={load}
+                    />
+                    <p className="eb-wallet-note" style={{ marginTop: ".6rem" }}>
+                      Club matches require a certified referee. Designation sets the
+                      player&apos;s platform role to referee.
                     </p>
                   </section>
                   <section className="eb-pf-card">

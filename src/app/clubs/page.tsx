@@ -38,7 +38,19 @@ function CreateClubForm({ onDone }: { onDone: () => void }) {
     <form className="eb-club-create" onSubmit={submit}>
       <input required minLength={3} maxLength={80} placeholder="Club name" value={name} onChange={(e) => setName(e.target.value)} />
       <input maxLength={120} placeholder="Home base (city)" value={homeBase} onChange={(e) => setHomeBase(e.target.value)} />
-      <input required minLength={6} maxLength={12} placeholder="Admin PIN (6+ chars)" type="password" value={pin} onChange={(e) => setPin(e.target.value)} />
+      <input
+        required
+        minLength={6}
+        maxLength={6}
+        inputMode="numeric"
+        pattern="\d{6}"
+        title="Exactly 6 digits"
+        placeholder="6-digit PIN"
+        type="password"
+        value={pin}
+        // keep only digits, cap at 6 — the backend requires exactly 6 numeric chars
+        onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
+      />
       <button className="btn btn-lm btn-sm" disabled={busy} type="submit">
         {busy ? "Founding…" : "🛡️ Found Club"}
       </button>
@@ -76,7 +88,8 @@ export default function ClubsPage() {
             <h3>Found a new club</h3>
             <CreateClubForm onDone={() => { setShowCreate(false); load(); }} />
             <p className="eb-wallet-note" style={{ marginTop: ".6rem" }}>
-              You become the club manager. The admin PIN protects club actions — don&apos;t share it.
+              You become the club manager. The admin PIN is a <b>6-digit number</b> that
+              protects club actions — pick one you&apos;ll remember, and don&apos;t share it.
             </p>
           </div>
         ) : null}

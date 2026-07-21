@@ -13,8 +13,9 @@ import AdminDashboardTab from "@/components/admin/AdminDashboardTab";
 import AdminPaymentsTab from "@/components/admin/AdminPaymentsTab";
 import AdminPlayersTab from "@/components/admin/AdminPlayersTab";
 import AdminAuditTab from "@/components/admin/AdminAuditTab";
+import AdminTournamentsTab from "@/components/admin/AdminTournamentsTab";
 
-const TABS = ["Dashboard", "Payments", "Players", "Audit Log"] as const;
+const TABS = ["Dashboard", "Tournaments", "Payments", "Players", "Audit Log"] as const;
 type Tab = (typeof TABS)[number];
 
 const ADMIN_ROLES = ["admin", "sub_admin", "master"];
@@ -57,6 +58,7 @@ function Console() {
         </div>
 
         {tab === "Dashboard" && <AdminDashboardTab />}
+        {tab === "Tournaments" && <AdminTournamentsTab />}
         {tab === "Payments" && <AdminPaymentsTab />}
         {tab === "Players" && <AdminPlayersTab isMaster={user.platform_role === "master"} />}
         {tab === "Audit Log" && <AdminAuditTab />}
